@@ -12,7 +12,7 @@ import { displayInputParameters } from './utils';
 import { newIdentity, newSigner } from './identities';
 import config from './config';
 import ledger from './ledger';
-import { Asset } from './models';
+import { Asset } from './asset.model';
 
 const app = express();
 app.use(express.json());

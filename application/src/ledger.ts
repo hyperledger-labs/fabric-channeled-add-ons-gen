@@ -1,6 +1,6 @@
 import {Contract} from '@hyperledger/fabric-gateway';
 import { TextDecoder } from 'util';
-import { Asset } from './models';
+import { Asset } from './asset.model';
 const utf8Decoder = new TextDecoder();
 
 /**
