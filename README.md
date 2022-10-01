@@ -1,4 +1,8 @@
-# Title TBD
+# Fabric Channeled Add-ons Gen
+
+**fabric-channeled-add-ons-gen** is an open-source generator for Hyperledger Fabric add-on apps in dedicated channels.
+Inspired by the increasing utilization of browser extensions, **fabric-channeled-add-ons-gen** provides a solution
+for deploying user management applications on different Hyperledger Fabric channels in the form of add-ons.
 
 ## Application
 
@@ -52,3 +56,8 @@ When you are finished, you can bring down the test network (from the `test-netwo
 ```bash
 ./network.sh down
 ```
+
+## Status & Credits
+
+- Initial version supports an **asset-transfer-basic** workflow on **Google Chrome**.
+- Inspired by https://github.com/hyperledger-labs/fabric-chrome-extension.
