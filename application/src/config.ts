@@ -1,6 +1,12 @@
 import path from 'path';
 
-import { envOrDefault } from './utils';
+/**
+ * envOrDefault() will return the value of an environment variable, or a default value
+ * if the variable is undefined.
+ */
+function envOrDefault(key: string, defaultValue: string): string {
+    return process.env[key] || defaultValue;
+}
 
 const port = envOrDefault('APP_PORT', '8000');
 

@@ -1,14 +1,6 @@
 import config from './config';
 
 /**
- * envOrDefault() will return the value of an environment variable, or a default value
- * if the variable is undefined.
- */
-function envOrDefault(key: string, defaultValue: string): string {
-    return process.env[key] || defaultValue;
-}
-
-/**
  * displayInputParameters() will print the global scope parameters used by the main driver routine.
  */
 async function displayInputParameters(): Promise<void> {
@@ -24,6 +16,5 @@ async function displayInputParameters(): Promise<void> {
 }
 
 export {
-    envOrDefault,
     displayInputParameters,
 };
