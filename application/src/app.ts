@@ -6,6 +6,7 @@ import * as grpc from '@grpc/grpc-js';
 import { connect, Contract, Gateway, Network } from '@hyperledger/fabric-gateway';
 import { promises as fs } from 'fs';
 import express from 'express';
+import cors from 'cors';
 
 import { displayInputParameters } from './utils';
 import { newIdentity, newSigner } from './identities';
@@ -14,7 +15,12 @@ import ledger from './ledger';
 import { Asset } from './asset.model';
 
 const app = express();
+
+// Parse JSON bodies automatically
 app.use(express.json());
+
+// Enable CORS for all routes
+app.use(cors());
 
 // gRPC client that handles all connections with Fabric
 let client: grpc.Client;
