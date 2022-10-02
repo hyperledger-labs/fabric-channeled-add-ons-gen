@@ -2,10 +2,7 @@ module github.com/nkapsoulis/fabric-channeled-add-ons-gen/chaincode
 
 go 1.18
 
-require (
-	github.com/hyperledger/fabric-contract-api-go v1.1.0
-	github.com/hyperledger/fabric-samples/asset-transfer-basic/chaincode-go v0.0.0-20220909154814-ea533d61b966
-)
+require github.com/hyperledger/fabric-contract-api-go v1.1.0
 
 require (
 	github.com/PuerkitoBio/purell v1.1.1 // indirect
