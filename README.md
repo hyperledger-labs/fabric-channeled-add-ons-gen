@@ -10,7 +10,7 @@ TBD
 
 ## Extension
 
-TBD
+The extension is written in Typescript and React.
 
 ## Smart Contract
 
@@ -38,7 +38,7 @@ The Fabric test network is used to deploy and run this sample. Follow these step
 2. Deploy one of the smart contract implementations (from the `test-network` folder).
 
    ```bash
-   ./network.sh deployCC -ccn basic -ccp ../asset-transfer-basic/chaincode-go/ -ccl go
+   ./network.sh deployCC -ccn basic -ccp ../fabric-channeled-add-ons-gen/chaincode/ -ccl go
    ```
 
 3. Run the application (from the `fabric-channeled-add-ons-gen` folder).
@@ -48,6 +48,20 @@ The Fabric test network is used to deploy and run this sample. Follow these step
    npm install
    npm start
    ```
+
+4. Build the extension
+
+   ```bash
+   cd extension
+   npm install
+   npm run build
+   ```
+
+5. Install the extension
+
+On Google Chrome or Edge go to Settings -> Extensions, enable
+developer mode and then click load unpacked and select the
+`/build` folder of the extension.
 
 ## Clean up
 
