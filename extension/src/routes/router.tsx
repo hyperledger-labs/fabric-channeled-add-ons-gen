@@ -2,7 +2,10 @@ import React from 'react';
 import {
   createMemoryRouter,
 } from 'react-router-dom';
+import assetTransferService from '../services/assetTransferService';
 import { CreateAsset, action as createAction } from '../views/CreateAsset/CreateAsset';
+import GetAllAssets from '../views/GetAllAssets/GetAllAssets';
+import GetAsset from '../views/GetAsset/GetAsset';
 
 import Landing from '../views/Landing/Landing';
 import Navigation from '../views/Navigation/Navigation';
@@ -20,6 +23,15 @@ const router = createMemoryRouter([
     path: '/create-asset',
     element: <CreateAsset />,
     action: createAction,
+  },
+  {
+    path: '/all-assets',
+    element: <GetAllAssets />,
+    loader: assetTransferService.getAllAssets,
+  },
+  {
+    path: '/get-asset',
+    element: <GetAsset />,
   },
 ]);
 

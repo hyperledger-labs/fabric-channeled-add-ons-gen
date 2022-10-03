@@ -1,15 +1,33 @@
 import Asset from '../models/asset.model';
+import APIResponse from '../models/APIResponse.model';
+
 import { assetsURL, transferAssetURL } from '../utils/constants';
 
-const getAllAssets = async () => {
-  const response = await fetch(assetsURL, {
+async function getAllAssets(): Promise<Response> {
+  return fetch(assetsURL, {
     method: 'GET',
   });
-  const json = await response.json();
-  return json;
-};
+}
 
-const createAsset = async (asset: Asset) => {
+async function getAsset(assetID: string): Promise<APIResponse> {
+  const response = await fetch(`${assetsURL}/${assetID}`, {
+    method: 'GET',
+  });
+  if (response.status === 200) {
+    const json = await response.json() as Asset;
+    return { success: true, asset: json };
+  }
+  if (response.status === 404) {
+    return { success: false, message: `Asset ${assetID} not found` };
+  }
+  if (response.status === 500) {
+    const json = await response.json();
+    return { success: false, message: json };
+  }
+  return { success: false };
+}
+
+async function createAsset(asset: Asset): Promise<APIResponse> {
   const response = await fetch(assetsURL, {
     method: 'POST',
     headers: {
@@ -17,12 +35,14 @@ const createAsset = async (asset: Asset) => {
     },
     body: JSON.stringify(asset),
   });
+  if (response.status === 201) {
+    return { success: true };
+  }
   const json = await response.json();
-  console.log(json);
-  return json;
-};
+  return { success: false, message: json };
+}
 
-const transferAsset = async (assetID: string, newOwner: string) => {
+async function transferAsset(assetID: string, newOwner: string) {
   const response = await fetch(transferAssetURL, {
     method: 'POST',
     headers: {
@@ -32,10 +52,11 @@ const transferAsset = async (assetID: string, newOwner: string) => {
   });
   const json = await response.json();
   return json;
-};
+}
 
 const assetTransferService = {
   getAllAssets,
+  getAsset,
   createAsset,
   transferAsset,
 };

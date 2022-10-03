@@ -6,13 +6,13 @@ import Button from '../../components/Button/Button';
 import './Landing.css';
 
 function Landing() {
-  const navigation = useNavigate();
+  const navigate = useNavigate();
   return (
     <div>
       <h1>Welcome to the Hyperledger Fabric wallet!</h1>
       <div className="center-image">
         <img id="landing-image" src={`${process.env.PUBLIC_URL}/icons/fabric-logo.png`} alt="Hyperledger  Logo" />
-        <Button fullWidth onClick={() => navigation('/navigation')}>Go</Button>
+        <Button fullWidth onClick={() => navigate('/navigation')}>Go</Button>
       </div>
     </div>
   );
