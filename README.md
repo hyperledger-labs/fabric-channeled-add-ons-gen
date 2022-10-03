@@ -2,7 +2,7 @@
 
 **fabric-channeled-add-ons-gen** is an open-source generator for Hyperledger Fabric add-on apps in dedicated channels.
 Inspired by the increasing utilization of browser extensions, **fabric-channeled-add-ons-gen** provides a solution
-for deploying user management applications on different Hyperledger Fabric channels in the form of add-ons.
+for deploying user-managed applications on different Hyperledger Fabric channels in the form of add-ons.
 
 ## Application
 
