@@ -8,11 +8,11 @@ import { promises as fs } from 'fs';
 import express from 'express';
 import cors from 'cors';
 
-import config from './config';
-import ledger from './ledger';
-import { getErrorMessage } from './errors';
-import { newIdentity, newSigner } from './identities';
-import { displayInputParameters } from './utils';
+import config from './utils/config';
+import ledger from './ledger/ledger';
+import { getErrorMessage } from './utils/errors';
+import { newIdentity, newSigner } from './utils/identities';
+import { displayInputParameters } from './utils/utils';
 import { Asset } from './models/asset.model';
 import { ResponseData } from './models/responseData.model';
 
@@ -62,8 +62,8 @@ app.post('/assets', async (request, response) => {
 app.post('/transfer', async (request, response) => {
     const assetId: string = request.body.assetId;
     const newOwner: string = request.body.newOwner;
-    await ledger.transferAssetAsync(contract, assetId, newOwner);
-    response.status(200).end();
+    const res = await ledger.transferAssetAsync(contract, assetId, newOwner);
+    response.status(res.status).json(res.message);
 });
 
 // Get the asset details by assetID.

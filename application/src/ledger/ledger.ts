@@ -1,10 +1,9 @@
 import {Contract, EndorseError, GatewayError} from '@hyperledger/fabric-gateway';
-
-
 import { TextDecoder } from 'util';
-import { getErrorMessage } from './errors';
-import { Asset } from './models/asset.model';
-import { ResponseData } from './models/responseData.model';
+
+import { getErrorMessage } from '../utils/errors';
+import { Asset } from '../models/asset.model';
+import { ResponseData } from '../models/responseData.model';
 
 
 const utf8Decoder = new TextDecoder();
@@ -78,23 +77,29 @@ async function createAsset(contract: Contract, asset: Asset): Promise<ResponseDa
  * Submit transaction asynchronously, allowing the application to process the smart
  * contract response (e.g. update a UI) while waiting for the commit notification.
  */
-async function transferAssetAsync(contract: Contract, id: string, newOwner: string): Promise<void> {
+async function transferAssetAsync(contract: Contract, id: string, newOwner: string): Promise<ResponseData> {
     console.info('\n--> Async Submit Transaction: TransferAsset, updates existing asset owner');
 
-    const commit = await contract.submitAsync('TransferAsset', {
-        arguments: [id, newOwner],
-    });
-    const oldOwner = utf8Decoder.decode(commit.getResult());
+    try {
+        const commit = await contract.submitAsync('TransferAsset', {
+            arguments: [id, newOwner],
+        });
+        const oldOwner = utf8Decoder.decode(commit.getResult());
 
-    console.info(`*** Successfully submitted transaction to transfer ownership from ${oldOwner} to ${newOwner}`);
-    console.info('*** Waiting for transaction commit');
+        console.info(`*** Successfully submitted transaction to transfer ownership from ${oldOwner} to ${newOwner}`);
+        console.info('*** Waiting for transaction commit');
 
-    const status = await commit.getStatus();
-    if (!status.successful) {
-        throw new Error(`Transaction ${status.transactionId} failed to commit with status code ${status.code}`);
+        const status = await commit.getStatus();
+        if (!status.successful) {
+            throw new Error(`Transaction ${status.transactionId} failed to commit with status code ${status.code}`);
+        }
+
+        console.info('*** Transaction committed successfully');
+        return {status: 200, message: oldOwner}
+    } catch (e: unknown) {
+        console.error(e);
+        return {status: 500, message: getErrorMessage(e)};
     }
-
-    console.info('*** Transaction committed successfully');
 }
 
 async function readAssetByID(contract: Contract, id: string): Promise<ResponseData> {
