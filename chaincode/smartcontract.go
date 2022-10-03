@@ -25,6 +25,14 @@ type Asset struct {
 
 // InitLedger adds a base set of assets to the ledger
 func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) error {
+	initStatus, err := ctx.GetStub().GetState("initRan")
+	if err != nil {
+		return fmt.Errorf("failed to read from world state: %v", err)
+	}
+	if initStatus != nil {
+		return fmt.Errorf("init has already ran")
+	}
+
 	assets := []Asset{
 		{ID: "asset1", Color: "blue", Size: 5, Owner: "Tomoko", AppraisedValue: 300},
 		{ID: "asset2", Color: "red", Size: 5, Owner: "Brad", AppraisedValue: 400},
@@ -45,6 +53,8 @@ func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) 
 			return fmt.Errorf("failed to put to world state. %v", err)
 		}
 	}
+
+	ctx.GetStub().PutState("initRan", []byte{'1'})
 
 	return nil
 }
