@@ -97,6 +97,9 @@ async function transferAssetAsync(contract: Contract, id: string, newOwner: stri
         console.info('*** Transaction committed successfully');
         return {status: 200, message: oldOwner}
     } catch (e: unknown) {
+        if(e instanceof EndorseError && e.code === 10) {
+            return {status: 404, message: e.details[0].message}
+        }
         console.error(e);
         return {status: 500, message: getErrorMessage(e)};
     }

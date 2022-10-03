@@ -42,16 +42,19 @@ async function createAsset(asset: Asset): Promise<APIResponse> {
   return { success: false, message: json };
 }
 
-async function transferAsset(assetID: string, newOwner: string) {
+async function transferAsset(assetId: string, newOwner: string): Promise<APIResponse> {
   const response = await fetch(transferAssetURL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ assetID, newOwner }),
+    body: JSON.stringify({ assetId, newOwner }),
   });
   const json = await response.json();
-  return json;
+  if (response.status === 200) {
+    return { success: true, message: json };
+  }
+  return { success: false, message: json };
 }
 
 const assetTransferService = {
