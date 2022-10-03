@@ -1,6 +1,12 @@
-import {Contract} from '@hyperledger/fabric-gateway';
+import {Contract, EndorseError} from '@hyperledger/fabric-gateway';
+
+
 import { TextDecoder } from 'util';
-import { Asset } from './asset.model';
+import { getErrorMessage } from './errors';
+import { Asset } from './models/asset.model';
+import { ResponseData } from './models/responseData.model';
+
+
 const utf8Decoder = new TextDecoder();
 
 /**
@@ -9,13 +15,21 @@ const utf8Decoder = new TextDecoder();
  * later would likely not need to run an "init" function.
  */
 async function initLedger(contract: Contract): Promise<void> {
-    console.info('\n--> Submit Transaction: InitLedger, function creates the initial set of assets on the ledger');
+    console.info('\nSubmit Transaction: InitLedger, function creates the initial set of assets on the ledger');
 
-    const resultBytes = await contract.submitTransaction('InitLedger');
-    const resultJson = utf8Decoder.decode(resultBytes);
-    console.info('*** Init Result:', resultJson);
+    try {
+        const resultBytes = await contract.submitTransaction('InitLedger');
+        const resultJson = utf8Decoder.decode(resultBytes);
+        console.info('*** Init Result:', resultJson);
 
-    console.info('*** Transaction committed successfully');
+        console.info('*** Transaction committed successfully');
+    } catch (e: unknown) {
+        if (e instanceof EndorseError) {
+            console.info(`Result: ${e.details[0].message}`);
+        } else {
+            console.error(e);
+        }
+    }
 }
 
 /**
@@ -35,21 +49,29 @@ async function getAllAssets(contract: Contract): Promise<Asset[]> {
 /**
  * Submit a transaction synchronously, blocking until it has been committed to the ledger.
  */
-async function createAsset(contract: Contract, asset: Asset): Promise<void> {
+async function createAsset(contract: Contract, asset: Asset): Promise<ResponseData> {
     console.info('\n--> Submit Transaction: CreateAsset, creates new asset with ID, Color, Size, Owner and AppraisedValue arguments');
 
-    const resultBytes = await contract.submitTransaction(
-        'CreateAsset',
-        asset.ID,
-        asset.Color,
-        asset.Size.toString(),
-        asset.Owner,
-        asset.AppraisedValue.toString(),
-    );
-    const resultJson = utf8Decoder.decode(resultBytes);
-    console.info('*** Create asset Result:', resultJson);
-
-    console.info('*** Transaction committed successfully');
+    try {
+        await contract.submitTransaction(
+            'CreateAsset',
+            asset.ID,
+            asset.Color,
+            asset.Size.toString(10),
+            asset.Owner,
+            asset.AppraisedValue.toString(10),
+        );
+        console.info('*** Transaction committed successfully');
+        return {status:201};
+    } catch (e: unknown) {
+        if(e instanceof EndorseError) {
+            console.error(e.details[0].message)
+            return {status: 422, message: e.details[0].message};
+        } else {
+            console.error(e);
+            return {status: 500, message: getErrorMessage(e)};
+        }
+    }
 }
 
 /**

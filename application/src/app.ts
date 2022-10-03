@@ -8,11 +8,13 @@ import { promises as fs } from 'fs';
 import express from 'express';
 import cors from 'cors';
 
-import { displayInputParameters } from './utils';
-import { newIdentity, newSigner } from './identities';
 import config from './config';
 import ledger from './ledger';
-import { Asset } from './asset.model';
+import { getErrorMessage } from './errors';
+import { newIdentity, newSigner } from './identities';
+import { displayInputParameters } from './utils';
+import { Asset } from './models/asset.model';
+import { ResponseData } from './models/responseData.model';
 
 const app = express();
 
@@ -34,13 +36,6 @@ let network: Network;
 // The chaincode itself
 let contract: Contract;
 
-// Initialize a set of asset data on the ledger using the chaincode 'InitLedger' function.
-app.post('/init', async (request, response) => {
-    await ledger.initLedger(contract);
-    response.status(200).end();
-
-});
-
 // Return all the current assets on the ledger.
 app.get('/assets', async (request, response) => {
     const assets = await ledger.getAllAssets(contract);
@@ -52,8 +47,16 @@ app.get('/assets', async (request, response) => {
 app.post('/assets', async (request, response) => {
     // TODO: Add error handling for duplicate assets etc
     const asset: Asset = request.body;
-    await ledger.createAsset(contract, asset);
-    response.status(201).end();
+    try {
+        const res: ResponseData = await ledger.createAsset(contract, asset);
+        if(res.message) {
+            response.status(res.status).json(res.message);
+        } else {
+            response.status(res.status).end();
+        }
+    } catch (e: unknown) {
+        response.status(500).json(getErrorMessage(e));
+    }
 });
 
 // Update an existing asset asynchronously.
@@ -101,6 +104,8 @@ const server = app.listen(config.port, async () => {
     contract = network.getContract(config.chaincodeName);
 
     await displayInputParameters();
+
+    await ledger.initLedger(contract);
     console.info( `server started at port ${ config.port }` );
 });
 
@@ -113,3 +118,4 @@ process.on('SIGTERM', () => {
         console.debug('HTTP server closed')
     })
 })
+
