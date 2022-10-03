@@ -69,9 +69,20 @@ app.post('/transfer', async (request, response) => {
 
 // Get the asset details by assetID.
 app.get('/assets/:assetId', async (request, response) => {
-    // TODO: error handling for bad id?
-    const asset:Asset = await ledger.readAssetByID(contract, request.params.assetId);
-    response.status(200).json(asset);
+    const data = await ledger.readAssetByID(contract, request.params.assetId);
+    switch (data.status) {
+    case 200:
+        response.status(200).json(data.asset);
+        break;
+    case 500:
+        response.status(500).json(data.message);
+        break;
+    case 404:
+        response.status(404).end();
+        break;
+    default:
+        response.status(500).end();
+    }
 });
 
 async function newGrpcConnection(): Promise<grpc.Client> {

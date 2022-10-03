@@ -1,4 +1,4 @@
-import {Contract, EndorseError} from '@hyperledger/fabric-gateway';
+import {Contract, EndorseError, GatewayError} from '@hyperledger/fabric-gateway';
 
 
 import { TextDecoder } from 'util';
@@ -97,15 +97,24 @@ async function transferAssetAsync(contract: Contract, id: string, newOwner: stri
     console.info('*** Transaction committed successfully');
 }
 
-async function readAssetByID(contract: Contract, id: string): Promise<Asset> {
+async function readAssetByID(contract: Contract, id: string): Promise<ResponseData> {
     console.info('\n--> Evaluate Transaction: ReadAsset, function returns asset attributes');
 
-    const resultBytes = await contract.evaluateTransaction('ReadAsset', id);
+    try {
+        const resultBytes = await contract.evaluateTransaction('ReadAsset', id);
 
-    const resultJson = utf8Decoder.decode(resultBytes);
-    const result = JSON.parse(resultJson);
-    console.info('*** Result:', result);
-    return result;
+        const resultJson = utf8Decoder.decode(resultBytes);
+        const result = JSON.parse(resultJson);
+        console.info('*** Result:', result);
+        return {status: 200, asset: result};
+    } catch (e:unknown) {
+        if(e instanceof GatewayError && e.code === 2) {
+            return {status: 404};
+        }
+        else {
+            return {status: 500, message: getErrorMessage(e)};
+        }
+    }
 }
 
 const ledger = {
