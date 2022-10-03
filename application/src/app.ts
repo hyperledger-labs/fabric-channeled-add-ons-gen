@@ -45,7 +45,6 @@ app.get('/assets', async (request, response) => {
 
 // Create a new asset on the ledger.
 app.post('/assets', async (request, response) => {
-    // TODO: Add error handling for duplicate assets etc
     const asset: Asset = request.body;
     try {
         const res: ResponseData = await ledger.createAsset(contract, asset);
