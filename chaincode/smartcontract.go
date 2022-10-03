@@ -191,6 +191,9 @@ func (s *SmartContract) GetAllAssets(ctx contractapi.TransactionContextInterface
 		if err != nil {
 			return nil, err
 		}
+		if queryResponse.Key == "initRan" {
+			continue
+		}
 
 		var asset Asset
 		err = json.Unmarshal(queryResponse.Value, &asset)
