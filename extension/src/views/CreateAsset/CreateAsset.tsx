@@ -7,8 +7,17 @@ import Button from '../../components/Button/Button';
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
-  const asset = Object.fromEntries(formData);
-  assetTransferService.createAsset(asset as unknown as Asset);
+  const assetObj = Object.fromEntries(formData);
+
+  const asset: Asset = {
+    ID: assetObj.ID as string,
+    AppraisedValue: parseInt(assetObj.AppraisedValue as string, 10),
+    Color: assetObj.Color as string,
+    Owner: assetObj.Owner as string,
+    Size: parseInt(assetObj.Size as string, 10),
+  };
+
+  assetTransferService.createAsset(asset);
 }
 
 export function CreateAsset() {
@@ -16,6 +25,10 @@ export function CreateAsset() {
     <div>
       <h2>Create Asset</h2>
       <Form method="post">
+        <label htmlFor="ID">
+          ID:
+          <input type="text" id="ID" name="ID" />
+        </label>
         <label htmlFor="appraisedValue">
           Appraised value:
           <input type="number" id="appraisedValue" name="AppraisedValue" />
