@@ -74,4 +74,4 @@ When you are finished, you can bring down the test network (from the `test-netwo
 ## Status & Credits
 
 - Initial version supports an **asset-transfer-basic** workflow on **Google Chrome**.
-- Inspired by https://github.com/hyperledger-labs/fabric-chrome-extension.
+- Inspired by [Hyperledger Labs Fabric Chrome Extension](https://github.com/hyperledger-labs/fabric-chrome-extension).
