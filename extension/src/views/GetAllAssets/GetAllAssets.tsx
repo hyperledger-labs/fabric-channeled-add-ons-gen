@@ -8,7 +8,6 @@ export default function GetAllAssets() {
   const [assets, setAssets] = React.useState<Asset[]>([]);
 
   const data = useLoaderData() as any;
-  console.log(data);
   React.useEffect(() => {
     if (data.success !== undefined) {
       setError(data.message);
