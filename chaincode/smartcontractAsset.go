@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/hyperledger/fabric-contract-api-go/contractapi"
 )
@@ -31,6 +32,27 @@ func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) 
 	}
 	if initStatus != nil {
 		return fmt.Errorf("init has already ran")
+	}
+
+	users := []User{
+		{Name: "Tomoko", PubKey: "password"},
+		{Name: "Brad", PubKey: "password"},
+		{Name: "Jin Soo", PubKey: "password"},
+		{Name: "Max", PubKey: "password"},
+		{Name: "Adriana", PubKey: "password"},
+		{Name: "Michel", PubKey: "password"},
+	}
+
+	for _, user := range users {
+		userJSON, err := json.Marshal(user)
+		if err != nil {
+			return err
+		}
+
+		err = ctx.GetStub().PutState(user.Name, userJSON)
+		if err != nil {
+			return fmt.Errorf("failed to put to world state. %v", err)
+		}
 	}
 
 	assets := []Asset{
@@ -67,6 +89,14 @@ func (s *SmartContract) CreateAsset(ctx contractapi.TransactionContextInterface,
 	}
 	if exists {
 		return fmt.Errorf("the asset %s already exists", id)
+	}
+
+	userExists, err := s.UserExists(ctx, owner)
+	if err != nil {
+		return err
+	}
+	if !userExists {
+		return fmt.Errorf("failed to create asset, as user %s does not exist", user)
 	}
 
 	asset := Asset{
@@ -159,6 +189,14 @@ func (s *SmartContract) TransferAsset(ctx contractapi.TransactionContextInterfac
 		return "", err
 	}
 
+	userExists, err := s.UserExists(ctx, newOwner)
+	if err != nil {
+		return "", err
+	}
+	if !userExists {
+		return "", fmt.Errorf("the new owner %s does not exist", newOwner)
+	}
+
 	oldOwner := asset.Owner
 	asset.Owner = newOwner
 
@@ -191,7 +229,8 @@ func (s *SmartContract) GetAllAssets(ctx contractapi.TransactionContextInterface
 		if err != nil {
 			return nil, err
 		}
-		if queryResponse.Key == "initRan" {
+
+		if !strings.HasPrefix(queryResponse.Key, "asset_") {
 			continue
 		}
 
