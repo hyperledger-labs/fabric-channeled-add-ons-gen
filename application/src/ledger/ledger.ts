@@ -17,10 +17,7 @@ async function initLedger(contract: Contract): Promise<void> {
     console.info('\nSubmit Transaction: InitLedger, function creates the initial set of assets on the ledger');
 
     try {
-        const resultBytes = await contract.submitTransaction('InitLedger');
-        const resultJson = utf8Decoder.decode(resultBytes);
-        console.info('*** Init Result:', resultJson);
-
+        await contract.submitTransaction('InitLedger');
         console.info('*** Transaction committed successfully');
     } catch (e: unknown) {
         if (e instanceof EndorseError) {
