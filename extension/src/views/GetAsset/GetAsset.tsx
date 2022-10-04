@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../components/Button/Button';
-import Asset from '../../models/asset.model';
+import Asset from '../../models/Asset.model';
 import assetTransferService from '../../services/assetTransferService';
 
 export default function GetAsset() {

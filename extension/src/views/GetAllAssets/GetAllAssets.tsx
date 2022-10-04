@@ -1,14 +1,31 @@
 import React from 'react';
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import Button from '../../components/Button/Button';
-import Asset from '../../models/asset.model';
+import Asset from '../../models/Asset.model';
 
 export default function GetAllAssets() {
-  const assets = useLoaderData() as Asset[];
+  const [error, setError] = React.useState('');
+  const [assets, setAssets] = React.useState<Asset[]>([]);
+
+  const data = useLoaderData() as any;
+  console.log(data);
+  React.useEffect(() => {
+    if (data.success !== undefined) {
+      setError(data.message);
+    } else {
+      setAssets(data);
+      setError('');
+    }
+  }, [data]);
+
   const navigate = useNavigate();
   return (
     <>
       <h1>Assets</h1>
+      {
+        error !== ''
+        && <p>{`Error: ${error}`}</p>
+      }
       {assets.length
         ? (
           <table>
@@ -34,7 +51,8 @@ export default function GetAllAssets() {
             </tbody>
           </table>
         )
-        : <p>There are no assets to show.</p>}
+        : error === ''
+        && (<p>There are no assets to show.</p>)}
       <Button fullWidth onClick={() => navigate('/navigation')}>Back</Button>
     </>
   );

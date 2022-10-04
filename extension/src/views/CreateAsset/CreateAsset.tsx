@@ -4,7 +4,7 @@ import {
 } from 'react-router-dom';
 
 import assetTransferService from '../../services/assetTransferService';
-import Asset from '../../models/asset.model';
+import Asset from '../../models/Asset.model';
 import Button from '../../components/Button/Button';
 import APIResponse from '../../models/APIResponse.model';
 import Loader from '../../components/Loader/Loader';

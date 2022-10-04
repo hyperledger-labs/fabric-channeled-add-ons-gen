@@ -12,7 +12,7 @@ function Landing() {
       <h1>Welcome to the Hyperledger Fabric wallet!</h1>
       <div className="center-image">
         <img id="landing-image" src={`${process.env.PUBLIC_URL}/icons/fabric-logo.png`} alt="Hyperledger  Logo" />
-        <Button fullWidth onClick={() => navigate('/navigation')}>Go</Button>
+        <Button fullWidth onClick={() => navigate('/auth')}>Go</Button>
       </div>
     </div>
   );

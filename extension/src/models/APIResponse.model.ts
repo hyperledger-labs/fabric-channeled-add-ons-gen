@@ -1,4 +1,4 @@
-import Asset from './asset.model';
+import Asset from './Asset.model';
 
 interface APIResponse {
   asset?: Asset,

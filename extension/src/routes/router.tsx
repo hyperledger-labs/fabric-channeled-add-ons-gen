@@ -4,6 +4,7 @@ import {
 } from 'react-router-dom';
 
 import assetTransferService from '../services/assetTransferService';
+import Authentication from '../views/Authentication/Authentication';
 import { CreateAsset, action as createAction } from '../views/CreateAsset/CreateAsset';
 import GetAllAssets from '../views/GetAllAssets/GetAllAssets';
 import GetAsset from '../views/GetAsset/GetAsset';
@@ -15,6 +16,10 @@ const router = createMemoryRouter([
   {
     path: '/',
     element: <Landing />,
+  },
+  {
+    path: '/auth',
+    element: <Authentication />,
   },
   {
     path: '/navigation',
