@@ -3,7 +3,8 @@
   "description": "Hyperledger Fabric Chrome extension that can be used to access ledgers",
   "version": "0.1.0",
   "manifest_version": 3,
-  "permissions": ["storage"],
+  "permissions": ["cookies"],
+  "host_permissions": ["<all_urls>"],
   "action": {
     "default_popup": "index.html",
     "default_icon": {

@@ -1,12 +1,31 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
+// import cookies from '../../utils/cookies';
 import Button from '../../components/Button/Button';
 
 import './Landing.css';
 
 function Landing() {
   const navigate = useNavigate();
+
+  /*
+   * If the cookie exists and is not expired,
+   * we can directly go to the navigation page
+   * and skip the login process.
+   *
+   * TODO: Enable this when we have a way for users
+   * to log out
+   */
+  // React.useEffect(() => {
+  //   cookies.cookieExists()
+  //     .then((result) => {
+  //       if (result) {
+  //         navigate('/navigation');
+  //       }
+  //     });
+  // }, []);
+
   return (
     <div>
       <h1>Welcome to the Hyperledger Fabric wallet!</h1>
