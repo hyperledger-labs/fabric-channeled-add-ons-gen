@@ -28,14 +28,13 @@ router.post('/login', async (request, res) => {
     if(!match) {
         return res.status(404).json({'message': 'Private and public key do not match'});
     }
-    console.log(match);
 
     // secure cookies require https, so we don't enable them by default
     res.status(200).cookie('fabricAuth', requestUser.name, {
         maxAge: 1000 * 60 * 60, // one hour in ms
         signed: true,
         httpOnly: true,
-        sameSite: 'strict',
+        sameSite: 'lax',
     }).end();
 });
 

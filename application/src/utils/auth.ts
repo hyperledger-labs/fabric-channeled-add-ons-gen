@@ -2,7 +2,7 @@ import crypto from 'crypto';
 import {getErrorMessage} from './errors';
 
 function toPEMFormat(str: string): string {
-    return str.replaceAll('\t', '').replaceAll(/ \n/g, '\n');
+    return str.replaceAll('\t', '').replaceAll('\\n', '\n').replaceAll(/ \n/g, '\n');
 }
 
 export function keysMatch(keyOriginal:string, certOriginal: string): boolean | string {

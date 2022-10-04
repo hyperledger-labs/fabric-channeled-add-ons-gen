@@ -23,7 +23,9 @@ const app = express();
 app.use(express.json());
 
 // Enable CORS for all routes
-app.use(cors());
+app.use(cors({
+    credentials: true,
+}));
 
 // Add cookie parsing with encrypted cookies
 app.use(cookieParser(config.cookieSecret));
