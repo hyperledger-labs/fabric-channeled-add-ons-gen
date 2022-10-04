@@ -3,6 +3,7 @@ import { TextDecoder } from 'util';
 
 import { getErrorMessage } from '../utils/errors';
 import { Asset } from '../models/asset.model';
+import { User } from '../models/User.model';
 import { ResponseData } from '../models/responseData.model';
 
 
@@ -122,12 +123,29 @@ async function readAssetByID(contract: Contract, id: string): Promise<ResponseDa
     }
 }
 
+async function getUser(contract: Contract, name: string): Promise<User|string> {
+    console.info('\n--> Evaluate Transaction: ReadUser, function returns user public key');
+    try {
+        const resultBytes = await contract.evaluateTransaction('ReadUser', name);
+
+        const resultJson = utf8Decoder.decode(resultBytes);
+        const result = JSON.parse(resultJson);
+        console.info('*** Result:', result);
+
+        return result as User;
+    } catch (e: unknown) {
+        return getErrorMessage(e);
+    }
+
+}
+
 const ledger = {
     initLedger,
     getAllAssets,
     createAsset,
     transferAssetAsync,
     readAssetByID,
+    getUser,
 }
 
 export default ledger;

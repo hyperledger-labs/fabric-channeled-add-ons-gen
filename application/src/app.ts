@@ -7,14 +7,15 @@ import { connect, Contract, Gateway, Network } from '@hyperledger/fabric-gateway
 import { promises as fs } from 'fs';
 import express from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 
 import config from './utils/config';
 import ledger from './ledger/ledger';
-import { getErrorMessage } from './utils/errors';
 import { newIdentity, newSigner } from './utils/identities';
 import { displayInputParameters } from './utils/utils';
-import { Asset } from './models/asset.model';
-import { ResponseData } from './models/responseData.model';
+import assetsRouter from './routes/assets.routes';
+import authRouter from './routes/auth.routes';
+
 
 const app = express();
 
@@ -23,6 +24,9 @@ app.use(express.json());
 
 // Enable CORS for all routes
 app.use(cors());
+
+// Add cookie parsing with encrypted cookies
+app.use(cookieParser(config.cookieSecret));
 
 // gRPC client that handles all connections with Fabric
 let client: grpc.Client;
@@ -34,55 +38,12 @@ let gateway: Gateway;
 let network: Network;
 
 // The chaincode itself
-let contract: Contract;
+export let contract: Contract;
 
-// Return all the current assets on the ledger.
-app.get('/assets', async (request, response) => {
-    const assets = await ledger.getAllAssets(contract);
-    response.status(200).json(assets);
+// Our own routes
+app.use('/assets', assetsRouter);
+app.use('/auth', authRouter);
 
-});
-
-// Create a new asset on the ledger.
-app.post('/assets', async (request, response) => {
-    const asset: Asset = request.body;
-    try {
-        const res: ResponseData = await ledger.createAsset(contract, asset);
-        if(res.message) {
-            response.status(res.status).json(res.message);
-        } else {
-            response.status(res.status).end();
-        }
-    } catch (e: unknown) {
-        response.status(500).json(getErrorMessage(e));
-    }
-});
-
-// Update an existing asset asynchronously.
-app.post('/transfer', async (request, response) => {
-    const assetId: string = request.body.assetId;
-    const newOwner: string = request.body.newOwner;
-    const res = await ledger.transferAssetAsync(contract, assetId, newOwner);
-    response.status(res.status).json(res.message);
-});
-
-// Get the asset details by assetID.
-app.get('/assets/:assetId', async (request, response) => {
-    const data = await ledger.readAssetByID(contract, request.params.assetId);
-    switch (data.status) {
-    case 200:
-        response.status(200).json(data.asset);
-        break;
-    case 500:
-        response.status(500).json(data.message);
-        break;
-    case 404:
-        response.status(404).end();
-        break;
-    default:
-        response.status(500).end();
-    }
-});
 
 async function newGrpcConnection(): Promise<grpc.Client> {
     const tlsRootCert = await fs.readFile(config.tlsCertPath);

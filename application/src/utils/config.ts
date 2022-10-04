@@ -1,4 +1,7 @@
 import path from 'path';
+import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+
+dotenv.config()
 
 /**
  * envOrDefault() will return the value of an environment variable, or a default value
@@ -7,6 +10,9 @@ import path from 'path';
 function envOrDefault(key: string, defaultValue: string): string {
     return process.env[key] || defaultValue;
 }
+
+
+const cookieSecret = process.env['COOKIES_SECRET'];
 
 const port = envOrDefault('APP_PORT', '8000');
 
@@ -33,6 +39,7 @@ const peerEndpoint = envOrDefault('PEER_ENDPOINT', 'localhost:7051');
 const peerHostAlias = envOrDefault('PEER_HOST_ALIAS', 'peer0.org1.example.com');
 
 const config = {
+    cookieSecret,
     port,
     channelName,
     chaincodeName,
