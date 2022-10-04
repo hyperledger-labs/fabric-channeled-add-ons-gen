@@ -1,8 +1,15 @@
 import crypto from 'crypto';
 import {getErrorMessage} from './errors';
 
-export function keysMatch(key:string, cert: string): boolean | string {
+function toPEMFormat(str: string): string {
+    return str.replaceAll('\t', '').replaceAll(/ \n/g, '\n');
+}
+
+export function keysMatch(keyOriginal:string, certOriginal: string): boolean | string {
     try {
+        const key = toPEMFormat(keyOriginal);
+        const cert = toPEMFormat(certOriginal);
+
         const publicKeyFromPrivate = crypto.createPublicKey(key);
         const publicKey = crypto.createPublicKey(cert);
         const exportedPublicKeyFromPrivate = publicKeyFromPrivate.export({ type: 'spki', format: 'pem' });

@@ -34,13 +34,23 @@ func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) 
 		return fmt.Errorf("init has already ran")
 	}
 
+	publicKey := `-----BEGIN PUBLIC KEY-----
+	MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyGWcbSL8VA1ozj4t0xz2
+	GB2ZX41pdKPpCB5jEIxBfJIGLkv0NsfRaz7n4e2a2jiQnQ44dre8AiSnjv1i9nIc
+	t4Mt6QiigR5lX5jgbc964/17muow3UL0rvGp4EPZvmup75iGETCxHj2D1x062gIw
+	u9eFuiozo1QC7ccGvKAAviYpM4L/QyJrK/BjPtVQXOIV/bYKJWGSb7+E+TwMCIqR
+	0ZIQq0zaUw06SRb3/PKN7SoetsphO6oBdsl5EM1nkfD6Xz+9ZbLcV7K9uGwb5VZN
+	j+eFWkGFEvaLpe80x9wgp+SNgQGvhOd6Ttgu92pHV0k7vv+OQCevkKBK+URNZcJp
+	uwIDAQAB
+	-----END PUBLIC KEY-----`
+
 	users := []User{
-		{Name: "Tomoko", PubKey: "password"},
-		{Name: "Brad", PubKey: "password"},
-		{Name: "Jin Soo", PubKey: "password"},
-		{Name: "Max", PubKey: "password"},
-		{Name: "Adriana", PubKey: "password"},
-		{Name: "Michel", PubKey: "password"},
+		{Name: "Tomoko", PubKey: publicKey},
+		{Name: "Brad", PubKey: publicKey},
+		{Name: "Jin Soo", PubKey: publicKey},
+		{Name: "Max", PubKey: publicKey},
+		{Name: "Adriana", PubKey: publicKey},
+		{Name: "Michel", PubKey: publicKey},
 	}
 
 	for _, user := range users {
@@ -96,7 +106,7 @@ func (s *SmartContract) CreateAsset(ctx contractapi.TransactionContextInterface,
 		return err
 	}
 	if !userExists {
-		return fmt.Errorf("failed to create asset, as user %s does not exist", user)
+		return fmt.Errorf("failed to create asset, as user %s does not exist", owner)
 	}
 
 	asset := Asset{
@@ -230,7 +240,7 @@ func (s *SmartContract) GetAllAssets(ctx contractapi.TransactionContextInterface
 			return nil, err
 		}
 
-		if !strings.HasPrefix(queryResponse.Key, "asset_") {
+		if !strings.HasPrefix(queryResponse.Key, "asset") {
 			continue
 		}
 

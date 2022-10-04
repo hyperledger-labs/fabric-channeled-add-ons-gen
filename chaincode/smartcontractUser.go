@@ -50,7 +50,7 @@ func (s *SmartContract) ReadUser(ctx contractapi.TransactionContextInterface, na
 		return nil, fmt.Errorf("failed to read from world state: %v", err)
 	}
 	if userJSON == nil {
-		return nil, fmt.Errorf("the asset %s does not exist", id)
+		return nil, fmt.Errorf("the asset %s does not exist", name)
 	}
 
 	var user User
