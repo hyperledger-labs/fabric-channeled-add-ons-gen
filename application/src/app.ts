@@ -39,7 +39,8 @@ let gateway: Gateway;
 // The channel where the chaincode resides
 let network: Network;
 
-// The chaincode itself
+// The chaincode itself. We export it so ledger functions
+// can use it.
 export let contract: Contract;
 
 // Our own routes
