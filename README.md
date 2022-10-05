@@ -6,19 +6,19 @@ for deploying user-managed applications on different Hyperledger Fabric channels
 
 ## Application
 
-The application is written in Typescript (4.8) and express (4.18). It is based on the newly introduced Gateway service (Fabric 2.4),
-but can be easily adjusted to work with older versions as well.
+The application is written in Typescript (4.8) and express (4.18). It is based on the newly introduced Gateway service (Fabric 2.4), but can be easily adjusted to work with older versions as well.
 
 ## Extension
 
 The extension is written in React (18.2) Typescript (4.8). For routing between the views, React Router (6.4) was used. We
 used fetch API for communicating with the application.
 
-## Smart Contract
-
+## Chaincodes
 <!-- TODO: Add here about the two chaincodes when they are spit. -->
-The smart contract (in folder `chaincode`) is written in GO, based on the `asset-transfer-basic` sample. The added functionality
-includes a simplistic user management functionality.
+
+### Application Chaincode
+
+The smart contract (in folder `chaincode`) is written in GO, based on the `asset-transfer-basic` sample.
 The following functions are implemented to support the application:
 
 - CreateAsset
@@ -28,10 +28,16 @@ The following functions are implemented to support the application:
 - TransferAsset
 - AssetExists
 
+### User Chaincode
+
+There is a second chaincode which includes simplistic user management functionalities. These functionalities are:
+
 - UserExists
 - CreateUser
 - ReadUser
 - GetAllUsers
+
+The credentials for
 
 Note that the asset transfer implemented by the smart contract is a simplified scenario, without ownership validation, meant only to demonstrate how to invoke transactions.
 
@@ -39,8 +45,8 @@ Note that the asset transfer implemented by the smart contract is a simplified s
 
 The Fabric test network is used to deploy and run this sample. Follow these steps in order:
 
-0. Install Hyperledger Fabric and fabric-samples.
-   Instructions can be found on the [Fabric documentation](https://hyperledger-fabric.readthedocs.io/en/latest/install.html).
+0. Install Hyperledger Fabric and get the fabric-samples.
+   Instructions can be found on the [Fabric documentation](https://hyperledger-fabric.readthedocs.io/en/release-2.4/install.html).
 
 1. Clone this repository inside the fabric-samples folder.
 
@@ -108,9 +114,21 @@ that need to be done:
 
 3. Before starting the application edit the `.env` file and set there
    the needed configuration (such as `CHANNEL_NAME` and `CHAINCODE_NAME` and possibly the
-   `APP_PORT` if running multiple apps at the same time).
+   `APP_PORT` if running multiple apps at the same time). For example:
+
+   ```bash
+   APP_PORT=8001
+   CHANNEL_NAME=channel2
+   CHAINCODE_NAME=othercc
+   ```
 
 4. If needed edit the extension's `.env` file and make any changes needed there. Rebuild the extension after.
+
+   ```bash
+    REACT_APP_APPLICATION_PROTOCOL=http
+    REACT_APP_APPLICATION_HOSTNAME=localhost
+    REACT_APP_APPLICATION_PORT=8001
+   ```
 
 ## Clean up
 
@@ -123,4 +141,3 @@ When you are finished, you can bring down the test network (from the `test-netwo
 ## Status & Credits
 
 - Initial version supports an **asset-transfer-basic** workflow on **Google Chrome**.
-- Inspired by [Hyperledger Labs Fabric Chrome Extension](https://github.com/hyperledger-labs/fabric-chrome-extension).
