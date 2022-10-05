@@ -3,13 +3,17 @@ import express from 'express';
 import { User } from '../models/User.model';
 import ledger from '../ledger/ledger';
 import { contract } from '../app';
-import { keysMatch } from '../utils/auth';
+import { keysMatch } from '../utils/crypto';
 import isAuthenticated from '../middleware/isAuthenticated';
 
 const router = express.Router();
 
 router.post('/login', async (request, res) => {
     const requestUser: User = request.body;
+
+    if(!requestUser.pubkey) {
+        return res.status(400).json({'message':'User name is missing'});
+    }
 
     if(!requestUser.privkey) {
         return res.status(400).json({'message': 'Private key is missing'})
@@ -23,7 +27,8 @@ router.post('/login', async (request, res) => {
     const lUser = <User>ledgerUser;
 
     const match = keysMatch(requestUser.privkey as string, lUser.pubkey as string);
-    if(typeof match !== 'boolean') {
+    if(typeof match === 'string') {
+        console.log(match);
         return res.status(500).json({'message': match});
     }
     if(!match) {

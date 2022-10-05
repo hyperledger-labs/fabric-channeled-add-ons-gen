@@ -5,7 +5,7 @@ import { getErrorMessage } from '../utils/errors';
 import { Asset } from '../models/asset.model';
 import { User } from '../models/User.model';
 import { ResponseData } from '../models/responseData.model';
-import createKeys from '../utils/crypto';
+import { createKeys } from '../utils/crypto';
 
 
 const utf8Decoder = new TextDecoder();
