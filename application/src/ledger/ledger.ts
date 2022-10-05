@@ -5,6 +5,7 @@ import { getErrorMessage } from '../utils/errors';
 import { Asset } from '../models/asset.model';
 import { User } from '../models/User.model';
 import { ResponseData } from '../models/responseData.model';
+import createKeys from '../utils/crypto';
 
 
 const utf8Decoder = new TextDecoder();
@@ -19,7 +20,18 @@ async function initLedger(contract: Contract): Promise<void> {
 
     try {
         await contract.submitTransaction('InitLedger');
-        console.info('*** Transaction committed successfully');
+        console.info('*** InitLedger: Transaction committed successfully');
+        // We create the users only the first time InitLedger is ran.
+        const users = ['Tomoko', 'Brad', 'Jin Soo', 'Max', 'Adriana', 'Michel'];
+        users.forEach(async (user) => {
+            const keysOrError = await createKeys();
+            if (typeof keysOrError === 'string') {
+                throw new Error(keysOrError);
+            }
+            ledger.createUser(contract, user, keysOrError.publicKey);
+            console.info(`*** User ${user} PRIVATE KEY ***`);
+            console.info(`\n${keysOrError.privateKey}\n`);
+        });
     } catch (e: unknown) {
         if (e instanceof EndorseError) {
             console.info(`Result: ${e.details[0].message}`);
@@ -58,7 +70,7 @@ async function createAsset(contract: Contract, asset: Asset): Promise<ResponseDa
             asset.Owner,
             asset.AppraisedValue.toString(10),
         );
-        console.info('*** Transaction committed successfully');
+        console.info('*** CreateAsset: Transaction committed successfully');
         return {status:201};
     } catch (e: unknown) {
         if(e instanceof EndorseError) {
@@ -92,7 +104,7 @@ async function transferAssetAsync(contract: Contract, id: string, newOwner: stri
             throw new Error(`Transaction ${status.transactionId} failed to commit with status code ${status.code}`);
         }
 
-        console.info('*** Transaction committed successfully');
+        console.info('*** TransferAsset: Transaction committed successfully');
         return {status: 200, message: oldOwner}
     } catch (e: unknown) {
         if(e instanceof EndorseError && e.code === 10) {
@@ -111,7 +123,7 @@ async function readAssetByID(contract: Contract, id: string): Promise<ResponseDa
 
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
-        console.info('*** Result:', result);
+        console.info('*** ReadAsset: Result:', result);
         return {status: 200, asset: result};
     } catch (e:unknown) {
         if(e instanceof GatewayError && e.code === 2) {
@@ -130,7 +142,7 @@ async function getUser(contract: Contract, name: string): Promise<User|string> {
 
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
-        console.info('*** Result:', result);
+        console.info('*** ReadUSer: Result:', result);
 
         return result as User;
     } catch (e: unknown) {
@@ -149,7 +161,7 @@ async function createUser(contract: Contract, name: string, pubkey: string): Pro
             pubkey,
         );
 
-        console.info('*** Transaction committed successfully');
+        console.info('*** CreateUser: Transaction committed successfully');
         return {status:201};
     } catch (e: unknown) {
         if(e instanceof EndorseError) {
