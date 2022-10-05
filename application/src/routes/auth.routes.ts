@@ -11,7 +11,7 @@ const router = express.Router();
 router.post('/login', async (request, res) => {
     const requestUser: User = request.body;
 
-    if(!requestUser.pubkey) {
+    if(!requestUser.name) {
         return res.status(400).json({'message':'User name is missing'});
     }
 
