@@ -139,6 +139,29 @@ async function getUser(contract: Contract, name: string): Promise<User|string> {
 
 }
 
+async function createUser(contract: Contract, name: string, pubkey: string): Promise<ResponseData> {
+    console.info('\n--> Submit Transaction: CreateUser, creates new user with Name and Public Key arguments');
+
+    try {
+        await contract.submitTransaction(
+            'CreateUser',
+            name,
+            pubkey,
+        );
+
+        console.info('*** Transaction committed successfully');
+        return {status:201};
+    } catch (e: unknown) {
+        if(e instanceof EndorseError) {
+            console.error(e.details[0].message)
+            return {status: 422, message: e.details[0].message};
+        } else {
+            console.error(e);
+            return {status: 500, message: getErrorMessage(e)};
+        }
+    }
+}
+
 const ledger = {
     initLedger,
     getAllAssets,
@@ -146,6 +169,7 @@ const ledger = {
     transferAssetAsync,
     readAssetByID,
     getUser,
+    createUser,
 }
 
 export default ledger;

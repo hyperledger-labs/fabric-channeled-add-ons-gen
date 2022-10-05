@@ -66,12 +66,12 @@ func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) 
 	}
 
 	assets := []Asset{
-		{ID: "asset1", Color: "blue", Size: 5, Owner: "Tomoko", AppraisedValue: 300},
-		{ID: "asset2", Color: "red", Size: 5, Owner: "Brad", AppraisedValue: 400},
-		{ID: "asset3", Color: "green", Size: 10, Owner: "Jin Soo", AppraisedValue: 500},
-		{ID: "asset4", Color: "yellow", Size: 10, Owner: "Max", AppraisedValue: 600},
-		{ID: "asset5", Color: "black", Size: 15, Owner: "Adriana", AppraisedValue: 700},
-		{ID: "asset6", Color: "white", Size: 15, Owner: "Michel", AppraisedValue: 800},
+		{ID: "asset_1", Color: "blue", Size: 5, Owner: "Tomoko", AppraisedValue: 300},
+		{ID: "asset_2", Color: "red", Size: 5, Owner: "Brad", AppraisedValue: 400},
+		{ID: "asset_3", Color: "green", Size: 10, Owner: "Jin Soo", AppraisedValue: 500},
+		{ID: "asset_4", Color: "yellow", Size: 10, Owner: "Max", AppraisedValue: 600},
+		{ID: "asset_5", Color: "black", Size: 15, Owner: "Adriana", AppraisedValue: 700},
+		{ID: "asset_6", Color: "white", Size: 15, Owner: "Michel", AppraisedValue: 800},
 	}
 
 	for _, asset := range assets {
@@ -110,7 +110,7 @@ func (s *SmartContract) CreateAsset(ctx contractapi.TransactionContextInterface,
 	}
 
 	asset := Asset{
-		ID:             id,
+		ID:             "asset_" + id,
 		Color:          color,
 		Size:           size,
 		Owner:          owner,
@@ -240,7 +240,7 @@ func (s *SmartContract) GetAllAssets(ctx contractapi.TransactionContextInterface
 			return nil, err
 		}
 
-		if !strings.HasPrefix(queryResponse.Key, "asset") {
+		if !strings.HasPrefix(queryResponse.Key, "asset_") {
 			continue
 		}
 
