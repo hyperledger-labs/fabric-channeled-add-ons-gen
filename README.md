@@ -6,7 +6,8 @@ for deploying user-managed applications on different Hyperledger Fabric channels
 
 ## Application
 
-The application is written in Typescript (4.8) and express (4.18).
+The application is written in Typescript (4.8) and express (4.18). It is based on the newly introduced Gateway service (Fabric 2.4),
+but can be easily adjusted to work with older versions as well.
 
 ## Extension
 
@@ -38,23 +39,28 @@ Note that the asset transfer implemented by the smart contract is a simplified s
 
 The Fabric test network is used to deploy and run this sample. Follow these steps in order:
 
-1. Create the test network and a channel (from the `test-network` folder).
+0. Install Hyperledger Fabric and fabric-samples.
+   Instructions can be found on the [Fabric documentation](https://hyperledger-fabric.readthedocs.io/en/latest/install.html).
+
+1. Clone this repository inside the fabric-samples folder.
+
+2. Create the test network and a channel (from the `test-network` folder).
 
    ```bash
    ./network.sh up createChannel -c mychannel -ca
    ```
 
-2. Deploy one of the smart contract implementations (from the `test-network` folder). Here
+3. Deploy one of the smart contract implementations (from the `test-network` folder). Here
    we use the chaincode we provide:
 
    ```bash
    ./network.sh deployCC -ccn basic -ccp ../fabric-channeled-add-ons-gen/chaincode/ -ccl go
    ```
 
-3. Rename the `.env.example` file to `.env` and set a strong password for `COOKIES_SECRET`.
+4. Rename the `.env.example` file to `.env` and set a strong password for `COOKIES_SECRET`.
    This is the only configuration needed to be set up for now.
 
-4. Run the application (from the `fabric-channeled-add-ons-gen` folder).
+5. Run the application (from the `fabric-channeled-add-ons-gen` folder).
 
    ```bash
    cd application
@@ -62,9 +68,9 @@ The Fabric test network is used to deploy and run this sample. Follow these step
    npm start
    ```
 
-5. Before building the extension rename the `.env.example` to `.env` and make changes if necessary.
+6. Before building the extension rename the `.env.example` to `.env` and make changes if necessary.
 
-6. Build the extension
+7. Build the extension
 
    ```bash
    cd extension
@@ -72,13 +78,13 @@ The Fabric test network is used to deploy and run this sample. Follow these step
    npm run build
    ```
 
-7. Install the extension
+8. Install the extension
 
    On Google Chrome or Edge go to Settings -> Extensions, enable
    developer mode and then click load unpacked and select the
    `/build` folder of the extension.
 
-8. Use the given credentials
+9. Use the given credentials
 
    The private keys for the users created on startup are printed on the application logs.
    Copy them and use them with the extension.
