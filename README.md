@@ -66,9 +66,14 @@ The Fabric test network is used to deploy and run this sample. Follow these step
 
 5. Install the extension
 
-On Google Chrome or Edge go to Settings -> Extensions, enable
-developer mode and then click load unpacked and select the
-`/build` folder of the extension.
+   On Google Chrome or Edge go to Settings -> Extensions, enable
+   developer mode and then click load unpacked and select the
+   `/build` folder of the extension.
+
+6. Use the given credentials
+
+   The private key used for all users is provided in `assets/privateKey.pem`.
+   You can use it to log in as one of the existing users.
 
 ## Clean up
 
