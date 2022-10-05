@@ -48,7 +48,10 @@ The Fabric test network is used to deploy and run this sample. Follow these step
    ./network.sh deployCC -ccn basic -ccp ../fabric-channeled-add-ons-gen/chaincode/ -ccl go
    ```
 
-3. Run the application (from the `fabric-channeled-add-ons-gen` folder).
+3. Rename the `.env.example` file to `.env` and set a strong password for `COOKIES_SECRET`.
+   This is the only configuration needed to be set up for now.
+
+4. Run the application (from the `fabric-channeled-add-ons-gen` folder).
 
    ```bash
    cd application
@@ -56,7 +59,9 @@ The Fabric test network is used to deploy and run this sample. Follow these step
    npm start
    ```
 
-4. Build the extension
+5. Before building the extension rename the `.env.example` to `.env` and make changes if necessary.
+
+6. Build the extension
 
    ```bash
    cd extension
@@ -64,16 +69,39 @@ The Fabric test network is used to deploy and run this sample. Follow these step
    npm run build
    ```
 
-5. Install the extension
+7. Install the extension
 
    On Google Chrome or Edge go to Settings -> Extensions, enable
    developer mode and then click load unpacked and select the
    `/build` folder of the extension.
 
-6. Use the given credentials
+8. Use the given credentials
 
    The private keys for the users created on startup are printed on the application logs.
    Copy them and use them with the extension.
+
+## Deploying on more channels
+
+In case you want to deploy the same chaincode in another channel, the following are the changes
+that need to be done:
+
+1. When creating the channel do not run the up command.
+
+   ```bash
+   ./network.sh createChannel -c channel2 -ca
+   ```
+
+2. Explicitly select the channel to deploy to.
+
+   ```bash
+      ./network.sh deployCC -c channel2 -ccn basic -ccp ../fabric-channeled-add-ons-gen/chaincode/ -ccl go
+   ```
+
+3. Before starting the application edit the `.env` file and set there
+   the needed configuration (such as `CHANNEL_NAME` and `CHAINCODE_NAME` and possibly the
+   `APP_PORT` if running multiple apps at the same time).
+
+4. If needed edit the extension's `.env` file and make any changes needed there. Rebuild the extension after.
 
 ## Clean up
 
