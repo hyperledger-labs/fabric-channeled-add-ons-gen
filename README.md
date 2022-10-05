@@ -72,8 +72,8 @@ The Fabric test network is used to deploy and run this sample. Follow these step
 
 6. Use the given credentials
 
-   The private key used for all users is provided in `assets/privateKey.pem`.
-   You can use it to log in as one of the existing users.
+   The private keys for the users created on startup are printed on the application logs.
+   Copy them and use them with the extension.
 
 ## Clean up
 
