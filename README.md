@@ -15,8 +15,10 @@ used fetch API for communicating with the application.
 
 ## Smart Contract
 
-The smart contract (in folder `chaincode`) is written in GO
-and implements the following functions to support the application:
+<!-- TODO: Add here about the two chaincodes when they are spit. -->
+The smart contract (in folder `chaincode`) is written in GO, based on the `asset-transfer-basic` sample. The added functionality
+includes a simplistic user management functionality.
+The following functions are implemented to support the application:
 
 - CreateAsset
 - ReadAsset
@@ -42,7 +44,8 @@ The Fabric test network is used to deploy and run this sample. Follow these step
    ./network.sh up createChannel -c mychannel -ca
    ```
 
-2. Deploy one of the smart contract implementations (from the `test-network` folder).
+2. Deploy one of the smart contract implementations (from the `test-network` folder). Here
+   we use the chaincode we provide:
 
    ```bash
    ./network.sh deployCC -ccn basic -ccp ../fabric-channeled-add-ons-gen/chaincode/ -ccl go
@@ -94,7 +97,7 @@ that need to be done:
 2. Explicitly select the channel to deploy to.
 
    ```bash
-      ./network.sh deployCC -c channel2 -ccn basic -ccp ../fabric-channeled-add-ons-gen/chaincode/ -ccl go
+      ./network.sh deployCC -c channel2 -ccn othercc -ccp ../fabric-channeled-add-ons-gen/chaincode/ -ccl go
    ```
 
 3. Before starting the application edit the `.env` file and set there
