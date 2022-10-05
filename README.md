@@ -6,11 +6,12 @@ for deploying user-managed applications on different Hyperledger Fabric channels
 
 ## Application
 
-TBD
+The application is written in Typescript (4.8) and express (4.18).
 
 ## Extension
 
-The extension is written in Typescript and React.
+The extension is written in React (18.2) Typescript (4.8). For routing between the views, React Router (6.4) was used. We
+used fetch API for communicating with the application.
 
 ## Smart Contract
 
@@ -22,6 +23,12 @@ and implements the following functions to support the application:
 - UpdateAsset
 - DeleteAsset
 - TransferAsset
+- AssetExists
+
+- UserExists
+- CreateUser
+- ReadUser
+- GetAllUsers
 
 Note that the asset transfer implemented by the smart contract is a simplified scenario, without ownership validation, meant only to demonstrate how to invoke transactions.
 

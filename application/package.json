@@ -16,8 +16,6 @@
     "start": "node dist/app.js",
     "develop": "nodemon src/app.ts"
   },
-  "author": "Leonidas Avdelas",
-  "license": "MIT",
   "dependencies": {
     "@grpc/grpc-js": "^1.7.1",
     "@hyperledger/fabric-gateway": "^1.1.0",
