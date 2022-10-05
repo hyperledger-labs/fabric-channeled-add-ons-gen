@@ -15,8 +15,8 @@ export const action: ActionFunction = async ({ request }): Promise<APIResponse> 
     return { success: true };
   }
 
-  const message = await res.json();
-  return { success: false, message };
+  const json = await res.json();
+  return { success: false, message: json.message };
 };
 
 export function Authentication() {
@@ -40,11 +40,11 @@ export function Authentication() {
       <Form method="post">
         <label htmlFor="username">
           Username:
-          <input type="text" id="username" name="username" />
+          <input type="text" id="username" name="username" required />
         </label>
         <label htmlFor="privkey">
           Private Key:
-          <input type="text" size={500} id="privkey" name="privkey" />
+          <textarea id="privkey" name="privkey" required />
         </label>
         <Button fullWidth>Log In</Button>
       </Form>
