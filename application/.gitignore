@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-
 # Coverage directory used by tools like istanbul
 coverage
 
@@ -13,4 +12,5 @@ jspm_packages/
 # Compiled TypeScript files
 dist
 
+# Environment file
 .env
