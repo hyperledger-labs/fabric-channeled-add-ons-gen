@@ -34,37 +34,6 @@ func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) 
 		return fmt.Errorf("init has already ran")
 	}
 
-	publicKey := `-----BEGIN PUBLIC KEY-----
-	MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyGWcbSL8VA1ozj4t0xz2
-	GB2ZX41pdKPpCB5jEIxBfJIGLkv0NsfRaz7n4e2a2jiQnQ44dre8AiSnjv1i9nIc
-	t4Mt6QiigR5lX5jgbc964/17muow3UL0rvGp4EPZvmup75iGETCxHj2D1x062gIw
-	u9eFuiozo1QC7ccGvKAAviYpM4L/QyJrK/BjPtVQXOIV/bYKJWGSb7+E+TwMCIqR
-	0ZIQq0zaUw06SRb3/PKN7SoetsphO6oBdsl5EM1nkfD6Xz+9ZbLcV7K9uGwb5VZN
-	j+eFWkGFEvaLpe80x9wgp+SNgQGvhOd6Ttgu92pHV0k7vv+OQCevkKBK+URNZcJp
-	uwIDAQAB
-	-----END PUBLIC KEY-----`
-
-	users := []User{
-		{Name: "Tomoko", PubKey: publicKey},
-		{Name: "Brad", PubKey: publicKey},
-		{Name: "Jin Soo", PubKey: publicKey},
-		{Name: "Max", PubKey: publicKey},
-		{Name: "Adriana", PubKey: publicKey},
-		{Name: "Michel", PubKey: publicKey},
-	}
-
-	for _, user := range users {
-		userJSON, err := json.Marshal(user)
-		if err != nil {
-			return err
-		}
-
-		err = ctx.GetStub().PutState(user.Name, userJSON)
-		if err != nil {
-			return fmt.Errorf("failed to put to world state. %v", err)
-		}
-	}
-
 	assets := []Asset{
 		{ID: "asset_1", Color: "blue", Size: 5, Owner: "Tomoko", AppraisedValue: 300},
 		{ID: "asset_2", Color: "red", Size: 5, Owner: "Brad", AppraisedValue: 400},
