@@ -26,7 +26,7 @@ used fetch API for communicating with the application.
 
 ### Application Chaincode
 
-The smart contract (in folder `chaincode`) is written in GO, based on the `asset-transfer-basic` sample.
+The smart contract (in folder `chaincode`) is written in GO v1.18, based on the `asset-transfer-basic` sample.
 The following functions are implemented to support the application:
 
 - CreateAsset
@@ -53,52 +53,62 @@ Note that the asset transfer implemented by the smart contract is a simplified s
 
 The Fabric test network is used to deploy and run this sample. Follow these steps in order:
 
-0. Install Hyperledger Fabric and get the fabric-samples.
-   Instructions can be found on the [Fabric documentation](https://hyperledger-fabric.readthedocs.io/en/release-2.4/install.html).
+0. Install Hyperledger Fabric and get the `fabric-samples`.
+   Instructions can be found on the [Fabric v2.4 documentation](https://hyperledger-fabric.readthedocs.io/en/release-2.4/install.html).
 
-1. Clone this repository inside the fabric-samples folder.
+   ```bash
+   curl -sSL https://bit.ly/2ysbOFE | bash -s #-- 2.4.6 1.5.3
+   cd fabric-samples/
+   ```
+   
+1. Clone **fabric-channeled-add-ons-gen** inside the `fabric-samples` folder.
+
+   ```bash
+   cd fabric-samples/
+   git clone https://github.com/nkapsoulis/fabric-channeled-add-ons-gen.git
+   ```
 
 2. Create the test network and a channel (from the `test-network` folder).
 
    ```bash
+   cd test-network/
    ./network.sh up createChannel -c mychannel -ca
    ```
 
-3. Deploy one of the smart contract implementations (from the `test-network` folder). Here
-   we use the chaincode we provide:
+3. Chaincode deployment of i) the user-management and ii) the selected application (here `asset-transfer-basic`). 
 
    ```bash
    ./network.sh deployCC -ccn basic -ccp ../fabric-channeled-add-ons-gen/chaincode/ -ccl go
    ```
 
-4. Rename the `.env.example` file to `.env` and set a strong password for `COOKIES_SECRET`.
+4. Running the application. Rename the `.env.example` file to `.env` and set a strong password for `COOKIES_SECRET`.
    This is the only configuration needed to be set up for now.
 
-5. Run the application (from the `fabric-channeled-add-ons-gen` folder).
-
    ```bash
-   cd application
+   cd ../fabric-channeled-add-ons-gen/application
+   mv .env.example .env 
+   # Set strong password for `COOKIES_SECRET`
    npm install
    npm start
    ```
 
-6. Before building the extension rename the `.env.example` to `.env` and make changes if necessary.
-
-7. Build the extension
+5. Building the add-on app (`extension/` directory). First rename the `.env.example` to `.env`. 
+Necessary changes should be made in the `.env` file at a latter step where more applications are enabled through the generator.
 
    ```bash
-   cd extension
+   cd ../extension
+   mv .env.example .env
    npm install
    npm run build
    ```
 
-8. Install the extension
+6. Install the add-on as a browser extension.
 
    On Google Chrome or Edge go to Settings -> Extensions, enable
    developer mode and then click load unpacked and select the
    `/build` folder of the extension.
 
-9. Use the given credentials
+7. Use the given credentials.
 
    The private keys for the users created on startup are printed on the application logs.
    Copy them and use them with the extension.
@@ -108,44 +118,72 @@ The Fabric test network is used to deploy and run this sample. Follow these step
 In case you want to deploy the same chaincode in another channel, the following are the changes
 that need to be done:
 
-1. When creating the channel do not run the up command.
+1. Create a new channel.
 
    ```bash
+   cd ../../test-network
    ./network.sh createChannel -c channel2 -ca
    ```
 
-2. Explicitly select the channel to deploy to.
+2. Select the new channel to deploy to.
 
    ```bash
-      ./network.sh deployCC -c channel2 -ccn othercc -ccp ../fabric-channeled-add-ons-gen/chaincode/ -ccl go
+    ./network.sh deployCC -c channel2 -ccn othercc -ccp ../fabric-channeled-add-ons-gen/chaincode/ -ccl go
    ```
 
-3. Before starting the application edit the `.env` file and set there
-   the needed configuration (such as `CHANNEL_NAME` and `CHAINCODE_NAME` and possibly the
-   `APP_PORT` if running multiple apps at the same time). For example:
+3. Before starting the application edit the `application/.env` file and set the environmental variables:
+   `COOKIES_SECRET`, `CHANNEL_NAME`, `CHAINCODE_NAME`, and the `APP_PORT` if running on same environment):
 
    ```bash
    APP_PORT=8001
+   COOKIES_SECRET=(...)
+   
    CHANNEL_NAME=channel2
    CHAINCODE_NAME=othercc
    ```
+   
+   Now start the application in a new terminal.
 
-4. If needed edit the extension's `.env` file and make any changes needed there. Rebuild the extension after.
+   ```bash
+   cd ../fabric-channeled-add-ons-gen/application/
+   # Set strong password for `COOKIES_SECRET`
+   npm start
+   ```
+
+4. Copy the `extension/` directory to `extension2/`.
+
+   ```bash
+   cd ..
+   cp -r extension/ extension2/
+   ```
+**Note: current development aims to use a single add-on build.**
+
+5. Edit the add-on's environment `extension2/.env` and rebuild it.
 
    ```bash
     REACT_APP_APPLICATION_PROTOCOL=http
     REACT_APP_APPLICATION_HOSTNAME=localhost
     REACT_APP_APPLICATION_PORT=8001
    ```
+   Now rebuild the add-on:
+
+   ```bash
+   cd ../extension2
+   npm run build
+   ```
 
 ## Clean up
 
-When you are finished, you can bring down the test network (from the `test-network` folder). The command will remove all the nodes of the test network, and delete any ledger data that you created.
+Close applications:
+
+#### _#TODO: kill apps in current environment_
+
+Bring down the test network (from the `test-network` folder). The command will remove all the blockchain nodes, and delete any ledger data created.
 
 ```bash
 ./network.sh down
 ```
 
-## Status & Credits
+## Status
 
-- Initial version supports an **asset-transfer-basic** workflow on **Google Chrome**.
+- Initial version supported an **asset-transfer-basic** workflow on **Google Chrome** and **Microsoft Edge**.

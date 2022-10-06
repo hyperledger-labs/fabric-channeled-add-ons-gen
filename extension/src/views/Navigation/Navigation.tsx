@@ -26,10 +26,10 @@ function Navigation() {
   return (
     <div>
       <h2>Welcome</h2>
-      <Button fullWidth onClick={() => navigate('/create-asset')}>Create Asset</Button>
-      <Button fullWidth onClick={() => navigate('/all-assets')}>Get all Assets</Button>
-      <Button fullWidth onClick={() => navigate('/get-asset')}>Get Asset</Button>
       <Button fullWidth onClick={() => navigate('/transfer')}>Transfer Asset</Button>
+      <Button fullWidth onClick={() => navigate('/all-assets')}>Get All Assets</Button>
+      <Button fullWidth onClick={() => navigate('/create-asset')}>Create Asset</Button>
+      { /* <Button fullWidth onClick={() => navigate('/get-asset')}>Get Asset</Button> */ }
       {showBackButton
           && <Button fullWidth onClick={() => navigate('/')}>Back</Button>}
     </div>
