@@ -1,5 +1,7 @@
 # Fabric Channeled Add-ons Gen
 
+### ***** Fundamental functionalities and integrations are completed. Working on the fixes that relate to the _#TODO_ sections described below. ***** 
+
 **fabric-channeled-add-ons-gen** is an open-source generator for Hyperledger Fabric add-on apps in dedicated channels. Inspired by the increasing utilization of browser extensions, **fabric-channeled-add-ons-gen** provides a solution for deploying user-managed applications on different Hyperledger Fabric channels in the form of add-ons.
 
 Contributors on **fabric-channeled-add-ons-gen** can bring their own business intelligence or browser support, and extend the generator beyond the initial release that consists of the **asset-transfer-basic** workflow.
@@ -45,8 +47,6 @@ There is a second chaincode which includes simplistic user management functional
 - ReadUser
 - GetAllUsers
 
-The credentials for
-
 Note that the asset transfer implemented by the smart contract is a simplified scenario, without ownership validation, meant only to demonstrate how to invoke transactions.
 
 ## Running the sample
@@ -75,7 +75,8 @@ The Fabric test network is used to deploy and run this sample. Follow these step
    ./network.sh up createChannel -c mychannel -ca
    ```
 
-3. Chaincode deployment of i) the user-management and ii) the selected application (here `asset-transfer-basic`). 
+3. #### _#TODO:_ Separate user-management and application chaincodes, making it easy to deploy different apps chaincodes using the same user-management chaincode.
+   Chaincode deployment of i) the user-management and ii) the selected application (here `asset-transfer-basic`). 
 
    ```bash
    ./network.sh deployCC -ccn basic -ccp ../fabric-channeled-add-ons-gen/chaincode/ -ccl go
@@ -95,6 +96,8 @@ The Fabric test network is used to deploy and run this sample. Follow these step
 5. Building the add-on app (`extension/` directory). First rename the `.env.example` to `.env`. 
 Necessary changes should be made in the `.env` file at a latter step where more applications are enabled through the generator.
 
+   #### _#TODO:_ Add application name to landing screen of extension. E.g. "Asset Transfer Basic App welcomes you!". Attention!: As per the _#TODO_ named _Channel-enabled login_ in line 158, the landing screen should follow the login one.  
+
    ```bash
    cd ../extension
    mv .env.example .env
@@ -108,8 +111,10 @@ Necessary changes should be made in the `.env` file at a latter step where more 
    developer mode and then click load unpacked and select the
    `/build` folder of the extension.
 
-7. Use the given credentials.
+   #### _#TODO:_ Add cookie to the extension so that the user does not have to log in again. Drop cookie at the end of browser session.
 
+7. Use the given credentials.
+   
    The private keys for the users created on startup are printed on the application logs.
    Copy them and use them with the extension.
 
@@ -150,13 +155,16 @@ that need to be done:
    npm start
    ```
 
-4. Copy the `extension/` directory to `extension2/`.
+4. #### _#TODO:_ Channel-enabled login: user can choose between applications in order to login through the extension by not building a different extension per application.
+
+   Copy the `extension/` directory to `extension2/`.
 
    ```bash
    cd ..
    cp -r extension/ extension2/
    ```
-**Note: current development aims to use a single add-on build.**
+
+[//]: # (**Note: current development aims to use a single add-on build.**)
 
 5. Edit the add-on's environment `extension2/.env` and rebuild it.
 
@@ -168,19 +176,20 @@ that need to be done:
    Now rebuild the add-on:
 
    ```bash
-   cd ../extension2
+   cd extension2
    npm run build
    ```
 
 ## Clean up
 
-Close applications:
+Close all applications:
 
-#### _#TODO: kill apps in current environment_
+#### _#TODO:_ how to bring down all the running React apps
 
 Bring down the test network (from the `test-network` folder). The command will remove all the blockchain nodes, and delete any ledger data created.
 
 ```bash
+cd ../../test-network
 ./network.sh down
 ```
 
