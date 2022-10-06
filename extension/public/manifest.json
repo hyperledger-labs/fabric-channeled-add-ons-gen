@@ -1,6 +1,6 @@
 {
-  "name": "Hyperledger Fabric Chrome Extension",
-  "description": "Hyperledger Fabric Chrome extension that can be used to access ledgers",
+  "name": "Fabric Channeled Add-ons Gen",
+  "description": "An open-source generator of Fabric add-on apps in dedicated channels.",
   "version": "0.1.0",
   "manifest_version": 3,
   "permissions": ["cookies"],
