@@ -196,3 +196,4 @@ cd ../../test-network
 ## Status
 
 - Initial version supported an **asset-transfer-basic** workflow on **Google Chrome** and **Microsoft Edge**.
+- Inspired by https://github.com/hyperledger-labs/fabric-chrome-extension
