@@ -8,6 +8,11 @@ import (
 	"github.com/hyperledger/fabric-contract-api-go/contractapi"
 )
 
+// SmartContract provides functions for managing an Asset
+type SmartContract struct {
+	contractapi.Contract
+}
+
 type User struct {
 	Name   string `json:"name"`
 	PubKey string `json:"pubkey"`
@@ -77,13 +82,6 @@ func (s *SmartContract) GetAllUsers(ctx contractapi.TransactionContextInterface)
 		queryResponse, err := resultsIterator.Next()
 		if err != nil {
 			return nil, err
-		}
-
-		if strings.HasPrefix(queryResponse.Key, "asset_") {
-			continue
-		}
-		if queryResponse.Key == "initRan" {
-			continue
 		}
 
 		var user User

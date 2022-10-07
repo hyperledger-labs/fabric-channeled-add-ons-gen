@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/hyperledger/fabric-chaincode-go/shim"
 	"github.com/hyperledger/fabric-contract-api-go/contractapi"
 )
 
@@ -70,10 +71,11 @@ func (s *SmartContract) CreateAsset(ctx contractapi.TransactionContextInterface,
 		return fmt.Errorf("the asset %s already exists", id)
 	}
 
-	userExists, err := s.UserExists(ctx, owner)
+	userExists, err := s.userExists(ctx, owner)
 	if err != nil {
 		return err
 	}
+
 	if !userExists {
 		return fmt.Errorf("failed to create asset, as user %s does not exist", owner)
 	}
@@ -168,7 +170,7 @@ func (s *SmartContract) TransferAsset(ctx contractapi.TransactionContextInterfac
 		return "", err
 	}
 
-	userExists, err := s.UserExists(ctx, newOwner)
+	userExists, err := s.userExists(ctx, newOwner)
 	if err != nil {
 		return "", err
 	}
@@ -222,4 +224,19 @@ func (s *SmartContract) GetAllAssets(ctx contractapi.TransactionContextInterface
 	}
 
 	return assets, nil
+}
+
+func (s *SmartContract) userExists(ctx contractapi.TransactionContextInterface, user string) (bool, error) {
+	// Create the arguments to invoke the UserExists function in the user_chaincode
+	params := []string{"UserExists", user}
+	queryArgs := make([][]byte, len(params))
+	for i, arg := range params {
+		queryArgs[i] = []byte(arg)
+	}
+
+	response := ctx.GetStub().InvokeChaincode("user_basic", queryArgs, ctx.GetStub().GetChannelID())
+	if response.Status != shim.OK {
+		return false, fmt.Errorf("failed to query user chaincode: %v", response.Payload)
+	}
+	return false, fmt.Errorf("%v", response.Payload)
 }

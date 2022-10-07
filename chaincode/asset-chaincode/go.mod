@@ -1,4 +1,4 @@
-module github.com/nkapsoulis/fabric-channeled-add-ons-gen/chaincode
+module github.com/nkapsoulis/fabric-channeled-add-ons-gen/chaincode/asset-chaincode
 
 go 1.18
 
