@@ -28,8 +28,9 @@ used fetch API for communicating with the application.
 
 ### Application Chaincode
 
-The smart contract (in folder `chaincode`) is written in GO v1.18, based on the `asset-transfer-basic` sample.
-The following functions are implemented to support the application:
+Here, the classic `asset-transfer-basic` chaincode is deployed as an example case, in `chaincode` directory (GO v1.18).
+In order to deploy another application, simply replace `asset-transfer-basic`.
+The following functions are implemented by default:
 
 - CreateAsset
 - ReadAsset
@@ -40,7 +41,8 @@ The following functions are implemented to support the application:
 
 ### User Chaincode
 
-There is a second chaincode which includes simplistic user management functionalities. These functionalities are:
+The user management chaincode creates ten (10) user accounts by default for the application chaincode selected above.
+The implemented user-related functions are:
 
 - UserExists
 - CreateUser
@@ -49,7 +51,7 @@ There is a second chaincode which includes simplistic user management functional
 
 Note that the asset transfer implemented by the smart contract is a simplified scenario, without ownership validation, meant only to demonstrate how to invoke transactions.
 
-## Running the sample
+## Setup & Quickstart of the Generator
 
 The Fabric test network is used to deploy and run this sample. Follow these steps in order:
 
@@ -118,10 +120,9 @@ Necessary changes should be made in the `.env` file at a latter step where more 
    The private keys for the users created on startup are printed on the application logs.
    Copy them and use them with the extension.
 
-## Deploying on more channels
+## New app generation and deployment in new channel
 
-In case you want to deploy the same chaincode in another channel, the following are the changes
-that need to be done:
+**fabric-channeled-add-ons-gen** enables the easy generation and deployment of new apps (here, `asset-transfer-basic`) in other channels (here, `channel2`). 
 
 1. Create a new channel.
 
