@@ -1,0 +1,20 @@
+version: "3.9"
+services:
+  app:
+    build:
+      context: ./application
+      dockerfile: ../docker/Dockerfile.application
+    expose:
+      - ${APP_PORT:-8000}
+    ports:
+      - ${APP_PORT:-8000}:${APP_PORT:-8000}
+    env_file:
+      - ./application/.env
+    environment:
+      - CRYPTO_PATH=/app/crypto-path/
+    volumes:
+      - ${LOCAL_CRYPTO_PATH}:/app/crypto-path/
+networks:
+  default:
+    name: fabric_test
+    external: true

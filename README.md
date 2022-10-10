@@ -82,7 +82,7 @@ The Fabric test network is used to deploy and run this sample. Follow these step
    ./network.sh deployCC -ccn user_basic -ccp ../fabric-channeled-add-ons-gen/chaincode/user-chaincode -ccl go
    ```
 
-4. Running the application. Rename the `.env.example` file to `.env` and set a strong password for `COOKIES_SECRET`.
+4. Running the application. For running the app in docker, look at step 5. Rename the `.env.example` file to `.env` and set a strong password for `COOKIES_SECRET`.
    This is the only configuration needed to be set up for now.
 
    ```bash
@@ -93,7 +93,15 @@ The Fabric test network is used to deploy and run this sample. Follow these step
    npm start
    ```
 
-5. Building the add-on app (`extension/` directory). First rename the `.env.example` to `.env`.
+5. (Optional) Running the application in docker. To run the application in docker, the environmental variables of `LOCAL_CRYPTO_PATH`, `PEER_ENDPOINT` and `COOKIES_SECRET` need to at least be set. Some sensible default values are the ones below:
+
+   ```bash
+   LOCAL_CRYPTO_PATH=../test-network/organizations/peerOrganizations/org1.example.com
+   ...
+   PEER_ENDPOINT=peer0.org1.example.com:7051
+   ```
+
+6. Building the add-on app (`extension/` directory). First rename the `.env.example` to `.env`.
 Necessary changes should be made in the `.env` file at a latter step where more applications are enabled through the generator.
 
    #### _#TODO:_ Add application name to landing screen of extension. E.g. "Asset Transfer Basic App welcomes you!". Attention!: As per the _#TODO_ named _Channel-enabled login_ in line 158, the landing screen should follow the login one.
@@ -105,7 +113,7 @@ Necessary changes should be made in the `.env` file at a latter step where more 
    npm run build
    ```
 
-6. Install the add-on as a browser extension.
+7. Install the add-on as a browser extension.
 
    On Google Chrome or Edge go to Settings -> Extensions, enable
    developer mode and then click load unpacked and select the
@@ -113,7 +121,7 @@ Necessary changes should be made in the `.env` file at a latter step where more 
 
    #### _#TODO:_ Add cookie to the extension so that the user does not have to log in again. Drop cookie at the end of browser session.
 
-7. Use the given credentials.
+8. Use the given credentials.
 
    The private keys for the users created on startup are printed on the application logs.
    Copy them and use them with the extension.

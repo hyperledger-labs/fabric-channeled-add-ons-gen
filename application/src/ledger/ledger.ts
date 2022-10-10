@@ -35,7 +35,7 @@ async function initLedger(contracts: Contracts): Promise<void> {
         });
     } catch (e: unknown) {
         if (e instanceof EndorseError) {
-            if(Array.isArray(e.details) && e.details.length ) {
+            if(Array.isArray(e.details) && e.details.length) {
                 console.error(`Result: ${e.details[0].message}`);
             } else {
                 console.error(e.cause.details)
@@ -170,8 +170,13 @@ async function createUser(contracts: Contracts, name: string, pubkey: string): P
         return {status:201};
     } catch (e: unknown) {
         if(e instanceof EndorseError) {
-            console.error(e.details[0].message)
-            return {status: 422, message: e.details[0].message};
+            if(Array.isArray(e.details) && e.details.length) {
+                console.error(`Result: ${e.details[0].message}`);
+                return {status: 422, message: e.details[0].message};
+            } else {
+                console.error(e.cause.details)
+                return {status: 422, message: e.cause.details}
+            }
         } else {
             console.error(e);
             return {status: 500, message: getErrorMessage(e)};
