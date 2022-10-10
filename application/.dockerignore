@@ -1,0 +1,9 @@
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Compiled TypeScript files
+dist
+
+# Dotenv file
+.env
