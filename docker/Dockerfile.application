@@ -1,0 +1,25 @@
+FROM node:16-alpine AS builder
+
+WORKDIR /app
+
+# Copy the whole application folder
+COPY . /app/
+
+# Install and build the app.
+RUN npm install
+
+FROM node:16-alpine
+
+WORKDIR /app
+
+# We don't need the dev dependencies anymore
+ENV NODE_ENV=production
+
+# However, we do need to install regular dependencies
+COPY ["package.json", "package-lock.json", "/app/"]
+COPY --from=builder /app/dist /app/
+
+# We don't want to build again.
+RUN npm i --ignore-scripts
+
+CMD [ "npm start" ]
