@@ -62,7 +62,6 @@ The Fabric test network is used to deploy and run this sample. Follow these step
    ```bash
    ./network.sh deployCC -ccn asset_basic -ccp ../fabric-channeled-add-ons-gen/chaincode/asset-chaincode -ccl go
    ./network.sh deployCC -ccn user_basic -ccp ../fabric-channeled-add-ons-gen/chaincode/user-chaincode -ccl go
-
    ```
 
 4. Rename the `.env.example` file to `.env` and set a strong password for `COOKIES_SECRET`.
