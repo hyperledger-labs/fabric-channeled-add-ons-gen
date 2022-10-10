@@ -30,8 +30,7 @@ function Navigation() {
       <Button fullWidth onClick={() => navigate('/all-assets')}>Get All Assets</Button>
       <Button fullWidth onClick={() => navigate('/create-asset')}>Create Asset</Button>
       { /* <Button fullWidth onClick={() => navigate('/get-asset')}>Get Asset</Button> */ }
-      {showBackButton
-          && <Button fullWidth onClick={() => navigate('/')}>Back</Button>}
+      {showBackButton ? <Button fullWidth onClick={() => navigate('/')}>Back</Button> : null}
     </div>
   );
 }
