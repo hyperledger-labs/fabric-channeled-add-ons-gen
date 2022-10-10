@@ -1,11 +1,12 @@
-import {Contract, EndorseError, GatewayError} from '@hyperledger/fabric-gateway';
+import { EndorseError, GatewayError} from '@hyperledger/fabric-gateway';
 import { TextDecoder } from 'util';
 
 import { getErrorMessage } from '../utils/errors';
 import { Asset } from '../models/asset.model';
-import { User } from '../models/User.model';
+import { User } from '../models/user.model';
 import { ResponseData } from '../models/responseData.model';
 import { createKeys } from '../utils/crypto';
+import { Contracts } from '../models/contracts.model';
 
 
 const utf8Decoder = new TextDecoder();
@@ -15,26 +16,30 @@ const utf8Decoder = new TextDecoder();
  * time it was started after its initial deployment. A new version of the chaincode deployed
  * later would likely not need to run an "init" function.
  */
-async function initLedger(contract: Contract): Promise<void> {
+async function initLedger(contracts: Contracts): Promise<void> {
     console.info('\nSubmit Transaction: InitLedger, function creates the initial set of assets on the ledger');
 
     try {
-        await contract.submitTransaction('InitLedger');
+        await contracts.assetContract.submitTransaction('InitLedger');
         console.info('*** InitLedger: Transaction committed successfully');
         // We create the users only the first time InitLedger is ran.
-        const users = ['Tomoko', 'Brad', 'Jin Soo', 'Max', 'Adriana', 'Michel'];
+        const users = ['Tomoko', 'Brad', 'Jin Soo', 'Max', 'Adriana', 'Michel', 'Mario', 'Anton', 'Marek', 'George'];
         users.forEach(async (user) => {
             const keysOrError = await createKeys();
             if (typeof keysOrError === 'string') {
                 throw new Error(keysOrError);
             }
-            ledger.createUser(contract, user, keysOrError.publicKey);
+            ledger.createUser(contracts, user, keysOrError.publicKey);
             console.info(`*** User ${user} PRIVATE KEY ***`);
             console.info(`\n${keysOrError.privateKey}\n`);
         });
     } catch (e: unknown) {
         if (e instanceof EndorseError) {
-            console.info(`Result: ${e.details[0].message}`);
+            if(Array.isArray(e.details) && e.details.length ) {
+                console.error(`Result: ${e.details[0].message}`);
+            } else {
+                console.error(e.cause.details)
+            }
         } else {
             console.error(e);
         }
@@ -44,10 +49,10 @@ async function initLedger(contract: Contract): Promise<void> {
 /**
  * Evaluate a transaction to query ledger state.
  */
-async function getAllAssets(contract: Contract): Promise<Asset[]> {
+async function getAllAssets(contracts: Contracts): Promise<Asset[]> {
     console.info('\n--> Evaluate Transaction: GetAllAssets, function returns all the current assets on the ledger');
 
-    const resultBytes = await contract.evaluateTransaction('GetAllAssets');
+    const resultBytes = await contracts.assetContract.evaluateTransaction('GetAllAssets');
 
     const resultJson = utf8Decoder.decode(resultBytes);
     const result: Asset[] = JSON.parse(resultJson);
@@ -58,11 +63,11 @@ async function getAllAssets(contract: Contract): Promise<Asset[]> {
 /**
  * Submit a transaction synchronously, blocking until it has been committed to the ledger.
  */
-async function createAsset(contract: Contract, asset: Asset): Promise<ResponseData> {
+async function createAsset(contracts: Contracts, asset: Asset): Promise<ResponseData> {
     console.info('\n--> Submit Transaction: CreateAsset, creates new asset with ID, Color, Size, Owner and AppraisedValue arguments');
 
     try {
-        await contract.submitTransaction(
+        await contracts.assetContract.submitTransaction(
             'CreateAsset',
             asset.ID,
             asset.Color,
@@ -87,11 +92,11 @@ async function createAsset(contract: Contract, asset: Asset): Promise<ResponseDa
  * Submit transaction asynchronously, allowing the application to process the smart
  * contract response (e.g. update a UI) while waiting for the commit notification.
  */
-async function transferAssetAsync(contract: Contract, id: string, newOwner: string): Promise<ResponseData> {
+async function transferAssetAsync(contracts: Contracts, id: string, newOwner: string): Promise<ResponseData> {
     console.info('\n--> Async Submit Transaction: TransferAsset, updates existing asset owner');
 
     try {
-        const commit = await contract.submitAsync('TransferAsset', {
+        const commit = await contracts.assetContract.submitAsync('TransferAsset', {
             arguments: [id, newOwner],
         });
         const oldOwner = utf8Decoder.decode(commit.getResult());
@@ -115,11 +120,11 @@ async function transferAssetAsync(contract: Contract, id: string, newOwner: stri
     }
 }
 
-async function readAssetByID(contract: Contract, id: string): Promise<ResponseData> {
+async function readAssetByID(contracts: Contracts, id: string): Promise<ResponseData> {
     console.info('\n--> Evaluate Transaction: ReadAsset, function returns asset attributes');
 
     try {
-        const resultBytes = await contract.evaluateTransaction('ReadAsset', id);
+        const resultBytes = await contracts.assetContract.evaluateTransaction('ReadAsset', id);
 
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
@@ -135,10 +140,10 @@ async function readAssetByID(contract: Contract, id: string): Promise<ResponseDa
     }
 }
 
-async function getUser(contract: Contract, name: string): Promise<User|string> {
+async function getUser(contracts: Contracts, name: string): Promise<User|string> {
     console.info('\n--> Evaluate Transaction: ReadUser, function returns user public key');
     try {
-        const resultBytes = await contract.evaluateTransaction('ReadUser', name);
+        const resultBytes = await contracts.userContract.evaluateTransaction('ReadUser', name);
 
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
@@ -151,11 +156,11 @@ async function getUser(contract: Contract, name: string): Promise<User|string> {
 
 }
 
-async function createUser(contract: Contract, name: string, pubkey: string): Promise<ResponseData> {
+async function createUser(contracts: Contracts, name: string, pubkey: string): Promise<ResponseData> {
     console.info('\n--> Submit Transaction: CreateUser, creates new user with Name and Public Key arguments');
 
     try {
-        await contract.submitTransaction(
+        await contracts.userContract.submitTransaction(
             'CreateUser',
             name,
             pubkey,

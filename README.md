@@ -1,6 +1,6 @@
 # Fabric Channeled Add-ons Gen
 
-### ***** Fundamental functionalities and integrations are completed. Working on the fixes that relate to the _#TODO_ sections described below. ***** 
+### ***** Fundamental functionalities and integrations are completed. Working on the fixes that relate to the _#TODO_ sections described below. *****
 
 **fabric-channeled-add-ons-gen** is an open-source generator for Hyperledger Fabric add-on apps in dedicated channels. Inspired by the increasing utilization of browser extensions, **fabric-channeled-add-ons-gen** provides a solution for deploying user-managed applications on different Hyperledger Fabric channels in the form of add-ons.
 
@@ -24,7 +24,6 @@ The extension is written in React (18.2) Typescript (4.8). For routing between t
 used fetch API for communicating with the application.
 
 ## Chaincodes
-<!-- TODO: Add here about the two chaincodes when they are spit. -->
 
 ### Application Chaincode
 
@@ -54,7 +53,6 @@ Note that the asset transfer implemented by the smart contract is a simplified s
 ## Setup & Quickstart of the Generator
 
 The Fabric test network is used to deploy and run this sample. Follow these steps in order:
-
 0. Install Hyperledger Fabric and get the `fabric-samples`.
    Instructions can be found on the [Fabric v2.4 documentation](https://hyperledger-fabric.readthedocs.io/en/release-2.4/install.html).
 
@@ -62,7 +60,7 @@ The Fabric test network is used to deploy and run this sample. Follow these step
    curl -sSL https://bit.ly/2ysbOFE | bash -s #-- 2.4.6 1.5.3
    cd fabric-samples/
    ```
-   
+
 1. Clone **fabric-channeled-add-ons-gen** inside the `fabric-samples` folder.
 
    ```bash
@@ -77,11 +75,11 @@ The Fabric test network is used to deploy and run this sample. Follow these step
    ./network.sh up createChannel -c mychannel -ca
    ```
 
-3. #### _#TODO:_ Separate user-management and application chaincodes, making it easy to deploy different apps chaincodes using the same user-management chaincode.
-   Chaincode deployment of i) the user-management and ii) the selected application (here `asset-transfer-basic`). 
+3. Chaincode deployment of i) the user-management and ii) the selected application (here `asset-transfer-basic`).
 
    ```bash
-   ./network.sh deployCC -ccn basic -ccp ../fabric-channeled-add-ons-gen/chaincode/ -ccl go
+   ./network.sh deployCC -ccn asset_basic -ccp ../fabric-channeled-add-ons-gen/chaincode/asset-chaincode -ccl go
+   ./network.sh deployCC -ccn user_basic -ccp ../fabric-channeled-add-ons-gen/chaincode/user-chaincode -ccl go
    ```
 
 4. Running the application. Rename the `.env.example` file to `.env` and set a strong password for `COOKIES_SECRET`.
@@ -89,16 +87,16 @@ The Fabric test network is used to deploy and run this sample. Follow these step
 
    ```bash
    cd ../fabric-channeled-add-ons-gen/application
-   mv .env.example .env 
+   mv .env.example .env
    # Set strong password for `COOKIES_SECRET`
    npm install
    npm start
    ```
 
-5. Building the add-on app (`extension/` directory). First rename the `.env.example` to `.env`. 
+5. Building the add-on app (`extension/` directory). First rename the `.env.example` to `.env`.
 Necessary changes should be made in the `.env` file at a latter step where more applications are enabled through the generator.
 
-   #### _#TODO:_ Add application name to landing screen of extension. E.g. "Asset Transfer Basic App welcomes you!". Attention!: As per the _#TODO_ named _Channel-enabled login_ in line 158, the landing screen should follow the login one.  
+   #### _#TODO:_ Add application name to landing screen of extension. E.g. "Asset Transfer Basic App welcomes you!". Attention!: As per the _#TODO_ named _Channel-enabled login_ in line 158, the landing screen should follow the login one.
 
    ```bash
    cd ../extension
@@ -116,13 +114,13 @@ Necessary changes should be made in the `.env` file at a latter step where more 
    #### _#TODO:_ Add cookie to the extension so that the user does not have to log in again. Drop cookie at the end of browser session.
 
 7. Use the given credentials.
-   
+
    The private keys for the users created on startup are printed on the application logs.
    Copy them and use them with the extension.
 
 ## New app generation and deployment in new channel
 
-**fabric-channeled-add-ons-gen** enables the easy generation and deployment of new apps (here, `asset-transfer-basic`) in other channels (here, `channel2`). 
+**fabric-channeled-add-ons-gen** enables the easy generation and deployment of new apps (here, `asset-transfer-basic`) in other channels (here, `channel2`).
 
 1. Create a new channel.
 
@@ -143,11 +141,11 @@ Necessary changes should be made in the `.env` file at a latter step where more 
    ```bash
    APP_PORT=8001
    COOKIES_SECRET=(...)
-   
+
    CHANNEL_NAME=channel2
    CHAINCODE_NAME=othercc
    ```
-   
+
    Now start the application in a new terminal.
 
    ```bash

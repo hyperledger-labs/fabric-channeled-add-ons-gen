@@ -17,7 +17,9 @@ const cookieSecret = process.env['COOKIES_SECRET'];
 const port = envOrDefault('APP_PORT', '8000');
 
 const channelName = envOrDefault('CHANNEL_NAME', 'mychannel');
-const chaincodeName = envOrDefault('CHAINCODE_NAME', 'basic');
+const assetChaincodeName = envOrDefault('ASSET_CHAINCODE_NAME', 'asset_basic');
+const userChaincodeName = envOrDefault('USER_CHAINCODE_NAME', 'user_basic');
+
 const mspId = envOrDefault('MSP_ID', 'Org1MSP');
 
 // Path to crypto materials.
@@ -42,7 +44,8 @@ const config = {
     cookieSecret,
     port,
     channelName,
-    chaincodeName,
+    assetChaincodeName,
+    userChaincodeName,
     mspId,
     cryptoPath,
     keyDirectoryPath,

@@ -1,8 +1,8 @@
 import express from 'express';
 
-import { User } from '../models/User.model';
+import { User } from '../models/user.model';
 import ledger from '../ledger/ledger';
-import { contract } from '../app';
+import { contracts } from '../app';
 import { keysMatch } from '../utils/crypto';
 import isAuthenticated from '../middleware/isAuthenticated';
 
@@ -19,7 +19,7 @@ router.post('/login', async (request, res) => {
         return res.status(400).json({'message': 'Private key is missing'})
     }
 
-    const ledgerUser = await ledger.getUser(contract, requestUser.name);
+    const ledgerUser = await ledger.getUser(contracts, requestUser.name);
     if(typeof ledgerUser === 'string') {
         return res.status(404).json({'message': ledgerUser});
     }
@@ -51,7 +51,7 @@ router.post('/create', isAuthenticated, async (request, response) =>  {
         return response.status(400).json({'message': 'Cannot create user without public key'});
     }
 
-    const resp = await ledger.createUser(contract, requestUser.name, requestUser.pubkey);
+    const resp = await ledger.createUser(contracts, requestUser.name, requestUser.pubkey);
 
     if (resp.status === 201) {
         return response.status(201).end();
