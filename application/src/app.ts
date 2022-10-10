@@ -3,7 +3,7 @@
  */
 
 import * as grpc from '@grpc/grpc-js';
-import { connect, Contract, Gateway, Network } from '@hyperledger/fabric-gateway';
+import { connect, Gateway, Network } from '@hyperledger/fabric-gateway';
 import { promises as fs } from 'fs';
 import express from 'express';
 import cors from 'cors';
@@ -15,7 +15,7 @@ import { newIdentity, newSigner } from './utils/identities';
 import { displayInputParameters } from './utils/utils';
 import assetsRouter from './routes/assets.routes';
 import authRouter from './routes/auth.routes';
-
+import { Contracts } from './models/contracts.model';
 
 const app = express();
 
@@ -41,7 +41,8 @@ let network: Network;
 
 // The chaincode itself. We export it so ledger functions
 // can use it.
-export let contract: Contract;
+export const contracts = {} as Contracts;
+
 
 // Our own routes
 app.use('/assets', assetsRouter);
@@ -75,11 +76,12 @@ const server = app.listen(config.port, async () => {
     network = gateway.getNetwork(config.channelName);
 
     // Get the smart contract from the network.
-    contract = network.getContract(config.chaincodeName);
+    contracts.assetContract = network.getContract(config.assetChaincodeName);
+    contracts.userContract = network.getContract(config.userChaincodeName);
 
     await displayInputParameters();
 
-    await ledger.initLedger(contract);
+    await ledger.initLedger(contracts);
     console.info( `server started at port ${ config.port }` );
 });
 

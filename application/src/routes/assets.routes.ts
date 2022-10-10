@@ -4,14 +4,14 @@ import ledger from '../ledger/ledger';
 import { getErrorMessage } from '../utils/errors';
 import { Asset } from '../models/asset.model';
 import { ResponseData } from '../models/responseData.model';
-import {contract } from '../app';
+import {contracts } from '../app';
 import isAuthenticated from '../middleware/isAuthenticated';
 
 const router = express.Router();
 
 // Return all the current assets on the ledger.
 router.get('/', isAuthenticated, async (request, response) => {
-    const assets = await ledger.getAllAssets(contract);
+    const assets = await ledger.getAllAssets(contracts);
     response.status(200).json(assets);
 
 });
@@ -20,7 +20,7 @@ router.get('/', isAuthenticated, async (request, response) => {
 router.post('/', isAuthenticated, async (request, response) => {
     const asset: Asset = request.body;
     try {
-        const res: ResponseData = await ledger.createAsset(contract, asset);
+        const res: ResponseData = await ledger.createAsset(contracts, asset);
         if(res.message) {
             response.status(res.status).json(res.message);
         } else {
@@ -35,13 +35,13 @@ router.post('/', isAuthenticated, async (request, response) => {
 router.post('/transfer', isAuthenticated, async (request, response) => {
     const assetId: string = request.body.assetId;
     const newOwner: string = request.body.newOwner;
-    const res = await ledger.transferAssetAsync(contract, assetId, newOwner);
+    const res = await ledger.transferAssetAsync(contracts, assetId, newOwner);
     response.status(res.status).json(res.message);
 });
 
 // Get the asset details by assetID.
 router.get('/:assetId', isAuthenticated, async (request, response) => {
-    const data = await ledger.readAssetByID(contract, request.params.assetId);
+    const data = await ledger.readAssetByID(contracts, request.params.assetId);
     switch (data.status) {
     case 200:
         response.status(200).json(data.asset);
