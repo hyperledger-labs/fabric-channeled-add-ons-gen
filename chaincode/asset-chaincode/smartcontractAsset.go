@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/hyperledger/fabric-chaincode-go/shim"
@@ -211,7 +212,7 @@ func (s *SmartContract) GetAllAssets(ctx contractapi.TransactionContextInterface
 			return nil, err
 		}
 
-		if !strings.HasPrefix(queryResponse.Key, "asset_") {
+		if strings.HasPrefix(queryResponse.Key, "initRan") {
 			continue
 		}
 
@@ -238,5 +239,9 @@ func (s *SmartContract) userExists(ctx contractapi.TransactionContextInterface, 
 	if response.Status != shim.OK {
 		return false, fmt.Errorf("failed to query user chaincode: %v", response.Payload)
 	}
-	return false, fmt.Errorf("%v", response.Payload)
+	exists, err := strconv.ParseBool(string(response.Payload))
+	if err != nil {
+		return false, fmt.Errorf("error in user exists: %v", err)
+	}
+	return exists, nil
 }
