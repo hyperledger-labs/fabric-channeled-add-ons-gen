@@ -1,8 +1,16 @@
 # Fabric Channeled Add-ons Gen
 
-**fabric-channeled-add-ons-gen** is an open-source generator for Hyperledger Fabric add-on apps in dedicated channels.
-Inspired by the increasing utilization of browser extensions, **fabric-channeled-add-ons-gen** provides a solution
-for deploying user-managed applications on different Hyperledger Fabric channels in the form of add-ons.
+**fabric-channeled-add-ons-gen** is an open-source generator for Hyperledger Fabric add-on apps in dedicated channels. Inspired by the increasing utilization of browser extensions, **fabric-channeled-add-ons-gen** provides a solution for deploying user-managed applications on different Hyperledger Fabric channels in the form of add-ons.
+
+Contributors on **fabric-channeled-add-ons-gen** can bring their own business intelligence or browser support, and extend the generator beyond the initial release that consists of the **asset-transfer-basic** workflow.
+
+**fabric-channeled-add-ons-gen** provides flexible configuration and deployment of add-on applications in separate Fabric channels by automating:
+
+- User management
+- Deployment as browser add-on
+- Data privacy through channels
+
+**fabric-channeled-add-ons-gen** is an open-source generator, suitable for Hyperledger Fabric networks, where the applications are deployed as add-ons for a separate channel with easy user management in mind.
 
 ## Application
 
@@ -43,9 +51,8 @@ Note that the asset transfer implemented by the smart contract is a simplified s
 ## Setup & Quickstart of the Generator
 
 The Fabric test network is used to deploy and run this sample. Follow these steps in order:
-
-0. Install Hyperledger Fabric and get the fabric-samples.
-   Instructions can be found on the [Fabric documentation](https://hyperledger-fabric.readthedocs.io/en/release-2.4/install.html).
+0. Install Hyperledger Fabric and get the `fabric-samples`.
+   Instructions can be found on the [Fabric v2.4 documentation](https://hyperledger-fabric.readthedocs.io/en/release-2.4/install.html).
 
    ```bash
    curl -sSL https://bit.ly/2ysbOFE | bash -s #-- 2.4.6 1.5.3
@@ -77,7 +84,9 @@ The Fabric test network is used to deploy and run this sample. Follow these step
    This is the only configuration needed to be set up for now.
 
    ```bash
-   cd application
+   cd ../fabric-channeled-add-ons-gen/application
+   mv .env.example .env
+   # Set strong password for `COOKIES_SECRET`
    npm install
    npm start
    ```
