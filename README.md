@@ -125,8 +125,6 @@ Necessary changes should be made in the `.env` file at a latter step where more 
    developer mode and then click load unpacked and select the
    `/build` folder of the extension.
 
-   #### _#TODO:_ Add cookie to the extension so that the user does not have to log in again. Drop cookie at the end of browser session.
-
 8. Use the given credentials.
 
    The private keys for the users created on startup are printed on the application logs.
