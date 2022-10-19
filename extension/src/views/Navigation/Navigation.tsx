@@ -1,27 +1,21 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-// import cookies from '../../utils/cookies';
 import Button from '../../components/Button/Button';
+import cookies from '../../utils/cookies';
 
 function Navigation() {
   const navigate = useNavigate();
-  const showBackButton = true;
-  // const [showBackButton, setShowBackButton] = React.useState(true);
-  /*
-   * If the cookie exists and is not expired,
-   * we hide the first view to save unnecessary clicks.
-   * TODO: Enable this when we have a way for users to logout.
-   */
+  const [error, setError] = React.useState('');
 
-  // React.useEffect(() => {
-  //   cookies.cookieExists()
-  //     .then((result) => {
-  //       if (result) {
-  //         setShowBackButton(false);
-  //       }
-  //     });
-  // }, []);
+  const onLogOutClick = async () => {
+    const deleted = await cookies.deleteCookie();
+    if (deleted !== '') {
+      setError(deleted);
+      return;
+    }
+    navigate('/');
+  };
 
   return (
     <div>
@@ -30,7 +24,8 @@ function Navigation() {
       <Button fullWidth onClick={() => navigate('/all-assets')}>Get All Assets</Button>
       <Button fullWidth onClick={() => navigate('/create-asset')}>Create Asset</Button>
       { /* <Button fullWidth onClick={() => navigate('/get-asset')}>Get Asset</Button> */ }
-      {showBackButton ? <Button fullWidth onClick={() => navigate('/')}>Back</Button> : null}
+      <Button fullWidth onClick={onLogOutClick}>Logout</Button>
+      { error ? <p>{error}</p> : null}
     </div>
   );
 }
