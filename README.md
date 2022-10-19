@@ -100,6 +100,7 @@ The Fabric test network is used to deploy and run this sample. Follow these step
    ...
    PEER_ENDPOINT=peer0.org1.example.com:7051
    ```
+
    Then go to the root folder and run docker compose with a specified env file pointing on the `application/.env` file mentioned above.
 
    ```bash
@@ -175,7 +176,7 @@ Necessary changes should be made in the `.env` file at a latter step where more 
    cp -r extension/ extension2/
    ```
 
-[//]: # (**Note: current development aims to use a single add-on build.**)
+   [//]: # (**Note: current development aims to use a single add-on build.**)
 
 5. Edit the add-on's environment `extension2/.env` and rebuild it.
 
@@ -184,6 +185,7 @@ Necessary changes should be made in the `.env` file at a latter step where more 
     REACT_APP_APPLICATION_HOSTNAME=localhost
     REACT_APP_APPLICATION_PORT=8001
    ```
+
    Now rebuild the add-on:
 
    ```bash
@@ -207,4 +209,4 @@ cd ../../test-network
 ## Status
 
 - Initial version supported an **asset-transfer-basic** workflow on **Google Chrome** and **Microsoft Edge**.
-- Inspired by https://github.com/hyperledger-labs/fabric-chrome-extension
+- Inspired by [Hyperledger Labs Hyperledger Fabric Chrome Extension](https://github.com/hyperledger-labs/fabric-chrome-extension)
