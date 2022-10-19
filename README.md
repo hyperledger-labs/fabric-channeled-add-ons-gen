@@ -100,6 +100,12 @@ The Fabric test network is used to deploy and run this sample. Follow these step
    ...
    PEER_ENDPOINT=peer0.org1.example.com:7051
    ```
+   Then go to the root folder and run docker compose with a specified env file pointing on the `application/.env` file mentioned above.
+
+   ```bash
+   cd ..
+   docker compose --env-file application/.env up -d
+   ```
 
 6. Building the add-on app (`extension/` directory). First rename the `.env.example` to `.env`.
 Necessary changes should be made in the `.env` file at a latter step where more applications are enabled through the generator.
