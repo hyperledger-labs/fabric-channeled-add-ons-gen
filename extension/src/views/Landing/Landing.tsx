@@ -13,7 +13,8 @@ function Landing() {
   /*
    * If the cookie exists and is not expired,
    * we can directly go to the navigation page
-   * and skip the login process.
+   * and skip the login process. We load the landing
+   * page after we get the result, so we avoid flickering.
    */
   React.useLayoutEffect(() => {
     cookies.cookieExists()
