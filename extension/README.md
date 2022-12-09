@@ -32,4 +32,3 @@ To do that you need to enable developer mode for extensions and then load the un
 2. Use the slider to enable developer mode.
 3. Click the load unpacked option and load the extension.
 4. Try it out.
-

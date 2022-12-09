@@ -3,18 +3,25 @@ import { useNavigate } from 'react-router-dom';
 
 import Button from '../../components/Button/Button';
 import cookies from '../../utils/cookies';
+import localStorage from '../../utils/localStorage';
 
 function Navigation() {
   const navigate = useNavigate();
   const [error, setError] = React.useState('');
 
   const onLogOutClick = async () => {
-    const deleted = await cookies.deleteCookie();
-    if (deleted !== '') {
-      setError(deleted);
-      return;
-    }
-    navigate('/');
+    Promise.all([cookies.deleteCookie(), localStorage.deleteLocalStorage('url')])
+      .then(([deleted, removed]) => {
+        if (deleted !== '') {
+          setError(deleted);
+          return;
+        }
+        if (!removed) {
+          setError('Local storage error');
+          return;
+        }
+        navigate('/');
+      });
   };
 
   return (

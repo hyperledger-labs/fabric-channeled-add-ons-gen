@@ -3,7 +3,7 @@ import {
   ActionFunctionArgs, useNavigate, useFetcher,
 } from 'react-router-dom';
 
-import assetTransferService from '../../services/assetTransferService';
+import AssetTransferService from '../../services/AssetTransferService';
 import Asset from '../../models/Asset.model';
 import Button from '../../components/Button/Button';
 import APIResponse from '../../models/APIResponse.model';
@@ -21,7 +21,7 @@ export async function action({ request }: ActionFunctionArgs) {
     Size: parseInt(assetObj.Size as string, 10),
   };
 
-  return assetTransferService.createAsset(asset);
+  return AssetTransferService.createAsset(asset);
 }
 
 export function CreateAsset() {
