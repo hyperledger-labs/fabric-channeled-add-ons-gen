@@ -93,7 +93,7 @@ The Fabric test network is used to deploy and run this sample. Follow these step
    npm start
    ```
 
-5. (Optional) Running the application in docker. To run the application in docker, the environmental variables of `LOCAL_CRYPTO_PATH`, `PEER_ENDPOINT` and `COOKIES_SECRET` need to at least be set. Some sensible default values are the ones below:
+5. (Optional) Running the application in docker. To run the application in docker, the environmental variables of `LOCAL_CRYPTO_PATH`, `PEER_ENDPOINT` and `COOKIES_SECRET` need to at least be set. Some sensible default values are the ones below (also in `.env.example`):
 
    ```bash
    LOCAL_CRYPTO_PATH=../test-network/organizations/peerOrganizations/org1.example.com
@@ -128,8 +128,9 @@ Necessary changes should be made in the `.env` file at a latter step where more 
 
 8. Use the given credentials.
 
-   The private keys for the users created on startup are printed on the application logs.
-   Copy them and use them with the extension.
+   The private keys for the users created on startup are printed on the _application_ logs.
+   Copy the name and the private key and paste them on the extension. For server address the location of the
+   application should be used, for example `http://localhost:8000`.
 
 ## New app generation and deployment in new channel
 
@@ -167,37 +168,16 @@ Necessary changes should be made in the `.env` file at a latter step where more 
    npm start
    ```
 
-4. #### _#TODO:_ Channel-enabled login: user can choose between applications in order to login through the extension by not building a different extension per application.
-
-   Copy the `extension/` directory to `extension2/`.
-
-   ```bash
-   cd ..
-   cp -r extension/ extension2/
-   ```
-
-   [//]: # (**Note: current development aims to use a single add-on build.**)
-
-5. Edit the add-on's environment `extension2/.env` and rebuild it.
-
-   ```bash
-    REACT_APP_APPLICATION_PROTOCOL=http
-    REACT_APP_APPLICATION_HOSTNAME=localhost
-    REACT_APP_APPLICATION_PORT=8001
-   ```
-
-   Now rebuild the add-on:
-
-   ```bash
-   cd extension2
-   npm run build
-   ```
+4. Use the add-on to connect to the new channel, using the appropriate application port and address.
 
 ## Clean up
 
 Close all applications:
 
 #### _#TODO:_ how to bring down all the running React apps
+
+To stop the application, if running on terminal, you can stop it with `Cntrl+C`, by sending it SIGTERM. If using the docker container,
+`docker-compose down` should do.
 
 Bring down the test network (from the `test-network` folder). The command will remove all the blockchain nodes, and delete any ledger data created.
 
