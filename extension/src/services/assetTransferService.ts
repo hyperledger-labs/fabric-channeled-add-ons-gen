@@ -1,10 +1,10 @@
 import Asset from '../models/Asset.model';
 import APIResponse from '../models/APIResponse.model';
 
-import { assetsURL, transferAssetURL } from '../utils/constants';
+import { getAssetsURL, getTransferAssetURL } from '../utils/urls';
 
 async function getAllAssets(): Promise<Response | APIResponse> {
-  const response = await fetch(assetsURL, {
+  const response = await fetch(getAssetsURL(), {
     method: 'GET',
     credentials: 'include',
   });
@@ -15,7 +15,7 @@ async function getAllAssets(): Promise<Response | APIResponse> {
 }
 
 async function getAsset(assetID: string): Promise<APIResponse> {
-  const response = await fetch(`${assetsURL}/${assetID}`, {
+  const response = await fetch(`${getAssetsURL()}/${assetID}`, {
     method: 'GET',
     credentials: 'include',
 
@@ -32,7 +32,7 @@ async function getAsset(assetID: string): Promise<APIResponse> {
 }
 
 async function createAsset(asset: Asset): Promise<APIResponse> {
-  const response = await fetch(assetsURL, {
+  const response = await fetch(getAssetsURL(), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -48,7 +48,7 @@ async function createAsset(asset: Asset): Promise<APIResponse> {
 }
 
 async function transferAsset(assetId: string, newOwner: string): Promise<APIResponse> {
-  const response = await fetch(transferAssetURL, {
+  const response = await fetch(getTransferAssetURL(), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -63,11 +63,11 @@ async function transferAsset(assetId: string, newOwner: string): Promise<APIResp
   return { success: false, message: json };
 }
 
-const assetTransferService = {
+const AssetTransferService = {
   getAllAssets,
   getAsset,
   createAsset,
   transferAsset,
 };
 
-export default assetTransferService;
+export default AssetTransferService;

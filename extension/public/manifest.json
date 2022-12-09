@@ -3,7 +3,10 @@
   "description": "An open-source generator of Fabric add-on apps in dedicated channels.",
   "version": "0.1.0",
   "manifest_version": 3,
-  "permissions": ["cookies"],
+  "permissions": [
+    "cookies",
+    "storage"
+  ],
   "host_permissions": ["<all_urls>"],
   "action": {
     "default_popup": "index.html",

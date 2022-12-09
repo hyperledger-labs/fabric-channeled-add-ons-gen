@@ -3,7 +3,7 @@ import {
   createMemoryRouter,
 } from 'react-router-dom';
 
-import assetTransferService from '../services/assetTransferService';
+import AssetTransferService from '../services/AssetTransferService';
 import { Authentication, action as authAction } from '../views/Authentication/Authentication';
 import { CreateAsset, action as createAction } from '../views/CreateAsset/CreateAsset';
 import GetAllAssets from '../views/GetAllAssets/GetAllAssets';
@@ -34,7 +34,7 @@ const router = createMemoryRouter([
   {
     path: '/all-assets',
     element: <GetAllAssets />,
-    loader: assetTransferService.getAllAssets,
+    loader: AssetTransferService.getAllAssets,
   },
   {
     path: '/get-asset',
