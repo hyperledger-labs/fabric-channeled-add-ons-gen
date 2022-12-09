@@ -3,6 +3,7 @@ import {
   ActionFunction, Form, useActionData, useNavigate,
 } from 'react-router-dom';
 import Button from '../../components/Button/Button';
+import Input from '../../components/Input/Input';
 import APIResponse from '../../models/APIResponse.model';
 import authService from '../../services/AuthService';
 import { setBaseUrl } from '../../utils/urls';
@@ -10,7 +11,7 @@ import { setBaseUrl } from '../../utils/urls';
 export const action: ActionFunction = async ({ request }): Promise<APIResponse> => {
   const formData = await request.formData();
   const name = formData.get('username') as string;
-  const privkey = formData.get('privkey') as string;
+  const privkey = formData.get('private-key') as string;
   const serverAddress = formData.get('server-address') as string;
   const err = setBaseUrl(serverAddress);
   if (err !== '') {
@@ -45,18 +46,9 @@ export function Authentication() {
     <>
       <h1>Log In</h1>
       <Form method="post">
-        <label htmlFor="username">
-          Username:
-          <input type="text" id="username" name="username" required />
-        </label>
-        <label htmlFor="privkey">
-          Private Key:
-          <textarea id="privkey" name="privkey" required />
-        </label>
-        <label htmlFor="server-name">
-          Server address:
-          <input type="text" name="server-address" id="server-address" required />
-        </label>
+        <Input type="text" id="username" name="Username:" required />
+        <Input type="textarea" id="private-key" name="Private Key:" required />
+        <Input type="url" id="server-address" name="Server address:" required />
         <Button fullWidth>Log In</Button>
       </Form>
       {error !== ''
