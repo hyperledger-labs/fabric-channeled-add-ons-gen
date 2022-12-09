@@ -15,6 +15,7 @@ import { newIdentity, newSigner } from './utils/identities';
 import { displayInputParameters } from './utils/utils';
 import assetsRouter from './routes/assets.routes';
 import authRouter from './routes/auth.routes';
+import rootRouter from './routes/root.routes';
 import { Contracts } from './models/contracts.model';
 
 const app = express();
@@ -47,7 +48,7 @@ export const contracts = {} as Contracts;
 // Our own routes
 app.use('/assets', assetsRouter);
 app.use('/auth', authRouter);
-
+app.use('/', rootRouter);
 
 async function newGrpcConnection(): Promise<grpc.Client> {
     const tlsRootCert = await fs.readFile(config.tlsCertPath);

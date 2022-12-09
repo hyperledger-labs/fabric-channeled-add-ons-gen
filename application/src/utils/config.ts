@@ -40,6 +40,8 @@ const peerEndpoint = envOrDefault('PEER_ENDPOINT', 'localhost:7051');
 // Gateway peer SSL host name override.
 const peerHostAlias = envOrDefault('PEER_HOST_ALIAS', 'peer0.org1.example.com');
 
+const appName = envOrDefault('APP_NAME', 'fabric-channeled-add-ons-generator-demo');
+
 const config = {
     cookieSecret,
     port,
@@ -53,6 +55,7 @@ const config = {
     tlsCertPath,
     peerEndpoint,
     peerHostAlias,
+    appName,
 }
 
 export default config;
