@@ -1,7 +1,7 @@
-import { loginURL } from '../utils/constants';
+import { getLoginURL } from '../utils/urls';
 
 function login(name: string, privkey: string) {
-  return fetch(loginURL, {
+  return fetch(getLoginURL(), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

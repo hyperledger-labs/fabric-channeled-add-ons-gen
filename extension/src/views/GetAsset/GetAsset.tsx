@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../components/Button/Button';
 import Asset from '../../models/Asset.model';
-import assetTransferService from '../../services/assetTransferService';
+import AssetTransferService from '../../services/AssetTransferService';
 
 export default function GetAsset() {
   const [asset, setAsset] = React.useState({} as Asset);
@@ -12,7 +12,7 @@ export default function GetAsset() {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     const assetID = e.target.elements.assetID.value;
-    assetTransferService.getAsset(assetID)
+    AssetTransferService.getAsset(assetID)
       .then((response) => {
         if (response.success) {
           setAsset(response.asset!);

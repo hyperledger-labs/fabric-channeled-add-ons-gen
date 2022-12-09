@@ -4,13 +4,13 @@ import { ActionFunctionArgs, useFetcher, useNavigate } from 'react-router-dom';
 import Button from '../../components/Button/Button';
 import Loader from '../../components/Loader/Loader';
 import APIResponse from '../../models/APIResponse.model';
-import assetTransferService from '../../services/assetTransferService';
+import AssetTransferService from '../../services/AssetTransferService';
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
 
-  return assetTransferService.transferAsset(
+  return AssetTransferService.transferAsset(
     data.assetID as string,
     data.newOwner as string,
   );
