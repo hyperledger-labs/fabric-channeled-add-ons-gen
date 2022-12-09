@@ -2,6 +2,7 @@ import React from 'react';
 import { ActionFunctionArgs, useFetcher, useNavigate } from 'react-router-dom';
 
 import Button from '../../components/Button/Button';
+import Input from '../../components/Input/Input';
 import Loader from '../../components/Loader/Loader';
 import APIResponse from '../../models/APIResponse.model';
 import AssetTransferService from '../../services/AssetTransferService';
@@ -11,7 +12,7 @@ export async function action({ request }: ActionFunctionArgs) {
   const data = Object.fromEntries(formData);
 
   return AssetTransferService.transferAsset(
-    data.assetID as string,
+    data['asset-id'] as string,
     data.newOwner as string,
   );
 }
@@ -36,21 +37,16 @@ export function TransferAsset() {
     <>
       <h1>TransferAsset</h1>
       <fetcher.Form method="post">
-        <label htmlFor="assetID">
-          Asset ID:
-          <input type="text" id="assetID" name="assetID" />
-        </label>
-        <label htmlFor="newOwner">
-          New Owner:
-          <input
-            type="text"
-            id="newOwner"
-            name="newOwner"
-            onChange={(e) => setNewOwner(e.target.value)}
-            value={newOwner}
-            placeholder="John Doe"
-          />
-        </label>
+        <Input type="text" id="asset-id" name="Asset ID:" required />
+        <Input
+          type="text"
+          id="new-owner"
+          name="New Owner:"
+          placeholder="John Doe"
+          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setNewOwner(e.target.value)}
+          value={newOwner}
+          required
+        />
         <Button fullWidth>Transfer</Button>
       </fetcher.Form>
       <Button fullWidth onClick={() => navigate('/navigation')}>Back</Button>

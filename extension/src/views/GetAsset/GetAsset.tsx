@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../components/Button/Button';
+import Input from '../../components/Input/Input';
 import Asset from '../../models/Asset.model';
 import AssetTransferService from '../../services/AssetTransferService';
 
@@ -11,7 +12,7 @@ export default function GetAsset() {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    const assetID = e.target.elements.assetID.value;
+    const assetID = e.target.elements['asset-id'].value;
     AssetTransferService.getAsset(assetID)
       .then((response) => {
         if (response.success) {
@@ -27,11 +28,8 @@ export default function GetAsset() {
     <>
       <h1>Search Asset</h1>
       <form action="GET" onSubmit={handleSubmit}>
-        <label htmlFor="assetID">
-          Asset:
-          <input type="text" id="assetID" name="assetID" placeholder="asset2" />
-          <Button fullWidth>Search</Button>
-        </label>
+        <Input type="text" id="asset-id" name="Asset ID:" placeholder="asset2" required />
+        <Button fullWidth>Search</Button>
       </form>
       <Button fullWidth onClick={() => navigate('/navigation')}>Back</Button>
 

@@ -18,6 +18,9 @@ function Navigation() {
       .then((name) => {
         setServerName(name);
         setLoading(false);
+      })
+      .catch((e: unknown) => {
+        setError(e as string);
       });
   }, []);
 
@@ -36,22 +39,22 @@ function Navigation() {
       });
   };
 
-  if (loading) {
-    return (
-      <Loader />
-    );
-  }
-
   return (
     <div>
-      <h2>
-        Welcome at
-        {' '}
-        {serverName}
-      </h2>
-      <Button fullWidth onClick={() => navigate('/transfer')}>Transfer Asset</Button>
-      <Button fullWidth onClick={() => navigate('/all-assets')}>Get All Assets</Button>
-      <Button fullWidth onClick={() => navigate('/create-asset')}>Create Asset</Button>
+      {loading
+        ? <Loader />
+        : (
+          <>
+            <h2>
+              Welcome at
+              {' '}
+              {serverName}
+            </h2>
+            <Button fullWidth onClick={() => navigate('/transfer')}>Transfer Asset</Button>
+            <Button fullWidth onClick={() => navigate('/all-assets')}>Get All Assets</Button>
+            <Button fullWidth onClick={() => navigate('/create-asset')}>Create Asset</Button>
+          </>
+        )}
       { /* <Button fullWidth onClick={() => navigate('/get-asset')}>Get Asset</Button> */ }
       <Button fullWidth onClick={onLogOutClick}>Logout</Button>
       { error ? <p>{error}</p> : null}

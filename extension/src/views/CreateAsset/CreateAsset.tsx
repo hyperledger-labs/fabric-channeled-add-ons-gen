@@ -8,6 +8,7 @@ import Asset from '../../models/Asset.model';
 import Button from '../../components/Button/Button';
 import APIResponse from '../../models/APIResponse.model';
 import Loader from '../../components/Loader/Loader';
+import Input from '../../components/Input/Input';
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
@@ -15,7 +16,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
   const asset: Asset = {
     ID: assetObj.ID as string,
-    AppraisedValue: parseInt(assetObj.AppraisedValue as string, 10),
+    AppraisedValue: parseInt(assetObj['appraised-value'] as string, 10),
     Color: assetObj.Color as string,
     Owner: assetObj.Owner as string,
     Size: parseInt(assetObj.Size as string, 10),
@@ -46,26 +47,11 @@ export function CreateAsset() {
       <div>
         <h1>Create Asset</h1>
         <fetcher.Form method="post">
-          <label htmlFor="ID">
-            ID:
-            <input type="text" id="ID" name="ID" />
-          </label>
-          <label htmlFor="appraisedValue">
-            Appraised value:
-            <input type="number" id="appraisedValue" name="AppraisedValue" />
-          </label>
-          <label htmlFor="color">
-            Color:
-            <input type="text" id="color" name="Color" />
-          </label>
-          <label htmlFor="owner">
-            Owner:
-            <input type="text" id="owner" name="Owner" />
-          </label>
-          <label htmlFor="size">
-            Size:
-            <input type="number" id="size" name="Size" />
-          </label>
+          <Input type="text" id="id" name="ID:" required />
+          <Input type="text" id="appraised-value" name="Appraised Value:" required />
+          <Input type="text" id="color" name="Color:" required />
+          <Input type="text" id="owner" name="Owner:" required />
+          <Input type="text" id="size" name="Size:" required />
           <Button fullWidth>Submit</Button>
         </fetcher.Form>
       </div>
