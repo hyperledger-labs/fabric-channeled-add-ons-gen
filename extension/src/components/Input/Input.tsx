@@ -55,7 +55,7 @@ function Input({
 Input.defaultProps = {
   required: false,
   placeholder: '',
-  value: '',
+  value: undefined,
   onChange: undefined,
 };
 
