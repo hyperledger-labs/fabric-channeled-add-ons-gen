@@ -1,7 +1,5 @@
 # Fabric Channeled Add-ons Gen
 
-## ***** Fundamental functionalities and integrations are completed. Working on the fixes that relate to the _#TODO_ sections described below. *****
-
 **fabric-channeled-add-ons-gen** is an open-source generator for Hyperledger Fabric add-on apps in dedicated channels. Inspired by the increasing utilization of browser extensions, **fabric-channeled-add-ons-gen** provides a solution for deploying user-managed applications on different Hyperledger Fabric channels in the form of add-ons.
 
 Contributors on **fabric-channeled-add-ons-gen** can bring their own business intelligence or browser support, and extend the generator beyond the initial release that consists of the **asset-transfer-basic** workflow.
@@ -111,8 +109,6 @@ The Fabric test network is used to deploy and run this sample. Follow these step
 6. Building the add-on app (`extension/` directory). First rename the `.env.example` to `.env`.
 Necessary changes should be made in the `.env` file at a latter step where more applications are enabled through the generator.
 
-   #### _#TODO:_ Add application name to landing screen of extension. E.g. "Asset Transfer Basic App welcomes you!". Attention!: As per the _#TODO_ named _Channel-enabled login_ in line 158, the landing screen should follow the login one.
-
    ```bash
    cd ../extension
    mv .env.example .env
@@ -160,7 +156,7 @@ Necessary changes should be made in the `.env` file at a latter step where more 
    CHAINCODE_NAME=othercc
    ```
 
-   Now start the application in a new terminal.
+   Now start the application in a new terminal (or add another app to the `docker-compose.yml` file).
 
    ```bash
    cd ../fabric-channeled-add-ons-gen/application/
@@ -173,8 +169,6 @@ Necessary changes should be made in the `.env` file at a latter step where more 
 ## Clean up
 
 Close all applications:
-
-#### _#TODO:_ how to bring down all the running React apps
 
 To stop the application, if running on terminal, you can stop it with `Cntrl+C`, by sending it SIGTERM. If using the docker container,
 `docker-compose down` should do.
