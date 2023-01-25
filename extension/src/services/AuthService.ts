@@ -1,6 +1,6 @@
 import { getLoginURL } from '../utils/urls';
 
-function login(name: string, privkey: string) {
+function login(name: string, mnemonic: string) {
   return fetch(getLoginURL(), {
     method: 'POST',
     headers: {
@@ -9,7 +9,7 @@ function login(name: string, privkey: string) {
     credentials: 'include',
     body: JSON.stringify({
       name,
-      privkey,
+      mnemonic,
     }),
   });
 }
