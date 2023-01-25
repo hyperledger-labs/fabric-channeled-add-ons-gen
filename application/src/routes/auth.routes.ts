@@ -3,35 +3,37 @@ import express from 'express';
 import { User } from '../models/user.model';
 import ledger from '../ledger/ledger';
 import { contracts } from '../app';
-import { keysMatch } from '../utils/crypto';
+import { pubKeyMatchesMnemonic } from '../utils/crypto';
 
 const router = express.Router();
 
 router.post('/login', async (request, res) => {
     const requestUser: User = request.body;
 
-    if(!requestUser.name) {
-        return res.status(400).json({'message':'User name is missing'});
+    if (!requestUser.name) {
+        return res.status(400).json({ 'message': 'User name is missing' });
     }
 
-    if(!requestUser.privkey) {
-        return res.status(400).json({'message': 'Private key is missing'})
+    if (!requestUser.mnemonic) {
+        return res.status(400).json({ 'message': 'Mnemonic key is missing' })
     }
 
     const ledgerUser = await ledger.getUser(contracts, requestUser.name);
-    if(typeof ledgerUser === 'string') {
-        return res.status(404).json({'message': ledgerUser});
+    if (typeof ledgerUser === 'string') {
+        return res.status(404).json({ 'message': ledgerUser });
     }
 
     const lUser = <User>ledgerUser;
 
-    const match = keysMatch(requestUser.privkey as string, lUser.pubkey as string);
-    if(typeof match === 'string') {
+
+
+    const match = pubKeyMatchesMnemonic(requestUser.mnemonic as string, lUser.pubkey as string);
+    if (typeof match === 'string') {
         console.log(match);
-        return res.status(500).json({'message': match});
+        return res.status(500).json({ 'message': match });
     }
-    if(!match) {
-        return res.status(404).json({'message': 'Private and public key do not match'});
+    if (!match) {
+        return res.status(404).json({ 'message': 'Private and public key do not match' });
     }
 
     // secure cookies require https, so we don't enable them by default

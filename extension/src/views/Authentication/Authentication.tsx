@@ -11,14 +11,14 @@ import { setBaseUrl } from '../../utils/urls';
 export const action: ActionFunction = async ({ request }): Promise<APIResponse> => {
   const formData = await request.formData();
   const name = formData.get('username') as string;
-  const privkey = formData.get('private-key') as string;
+  const mnemonic = formData.get('mnemonic') as string;
   const serverAddress = formData.get('server-address') as string;
   const err = setBaseUrl(serverAddress);
   if (err !== '') {
     return { success: false, message: err };
   }
 
-  const res = await authService.login(name, privkey);
+  const res = await authService.login(name, mnemonic);
   if (res.status === 200) {
     return { success: true };
   }
@@ -47,7 +47,7 @@ export function Authentication() {
       <h1>Log In</h1>
       <Form method="post">
         <Input type="text" id="username" name="Username:" required />
-        <Input type="textarea" id="private-key" name="Private Key:" required />
+        <Input type="text" id="mnemonic" name="Mnemonic:" required />
         <Input type="url" id="server-address" name="Server address:" required />
         <Button fullWidth>Log In</Button>
       </Form>
