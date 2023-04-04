@@ -29,7 +29,7 @@ function Navigation() {
     const res = await authService.logout();
     if (res.status !== 200) {
       const json = await res.json();
-      setError(error === "" ? error : `${error}\n${json.message}`);
+      setError(error === '' ? error : `${error}\n${json.message}`);
     }
 
     Promise.all([cookies.deleteCookie(), localStorage.deleteLocalStorage('url')])
@@ -39,7 +39,7 @@ function Navigation() {
           return;
         }
         if (!removed) {
-          setError(error === "" ? error :`${error}\nLocal storage error`);
+          setError(error === '' ? error : `${error}\nLocal storage error`);
           return;
         }
         navigate('/');
