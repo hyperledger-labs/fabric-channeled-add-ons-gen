@@ -7,11 +7,13 @@ import Input from '../../components/Input/Input';
 import APIResponse from '../../models/APIResponse.model';
 import authService from '../../services/AuthService';
 import { setBaseUrl } from '../../utils/urls';
+import crypto from '../../utils/crypto';
 
 export const action: ActionFunction = async ({ request }): Promise<APIResponse> => {
   const formData = await request.formData();
   const name = formData.get('username') as string;
   const mnemonic = formData.get('mnemonic') as string;
+  const passphrase = formData.get('passphrase') as string;
   const serverAddress = formData.get('server-address') as string;
   const err = setBaseUrl(serverAddress);
   if (err !== '') {
@@ -20,6 +22,8 @@ export const action: ActionFunction = async ({ request }): Promise<APIResponse> 
 
   const res = await authService.login(name, mnemonic);
   if (res.status === 200) {
+    const encrypted = crypto.encrypt(mnemonic, passphrase);
+    await localStorage.setLocalStorage('mnemonic', encrypted);
     return { success: true };
   }
 
@@ -48,6 +52,7 @@ export function Authentication() {
       <Form method="post">
         <Input type="text" id="username" name="Username:" required />
         <Input type="text" id="mnemonic" name="Mnemonic:" required />
+        <Input type="password" id="passphrase" name="Passphrase:" required />
         <Input type="url" id="server-address" name="Server address:" required />
         <Button fullWidth>Log In</Button>
       </Form>

@@ -1,4 +1,4 @@
-import { getLoginURL } from '../utils/urls';
+import { getLoginURL, getLogoutURL } from '../utils/urls';
 
 function login(name: string, mnemonic: string) {
   return fetch(getLoginURL(), {
@@ -14,8 +14,20 @@ function login(name: string, mnemonic: string) {
   });
 }
 
+function logout() {
+  return fetch(getLogoutURL(), {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+  });
+}
+
+
 const authService = {
   login,
+  logout,
 };
 
 export default authService;
