@@ -47,7 +47,7 @@ router.post('/login', async (request, res) => {
 });
 
 router.post('/logout', isAuthenticated, async(request, res) => {
-    res.status(200).clearCookie('fabricAuth');
+    res.status(200).clearCookie('fabricAuth').end();
 });
 
 export default router;
