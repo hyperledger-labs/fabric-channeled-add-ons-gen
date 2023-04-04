@@ -53,7 +53,7 @@ export function Authentication() {
       <Form method="post">
         <Input type="text" id="username" name="Username:" required />
         <Input type="text" id="mnemonic" name="Mnemonic:" required />
-        <Input type="text" id="passphrase" name="Passphrase:" required />
+        <Input type="password" id="passphrase" name="Passphrase:" required />
         <Input type="url" id="server-address" name="Server address:" required />
         <Button fullWidth>Log In</Button>
       </Form>
