@@ -63,7 +63,7 @@ The Fabric test network is used to deploy and run this sample. Follow these step
 
    ```bash
    cd fabric-samples/
-   git clone https://github.com/nkapsoulis/fabric-channeled-add-ons-gen.git
+   git clone https://github.com/hyperledger-labs/fabric-channeled-add-ons-gen.git
    ```
 
 2. Create the test network and a channel (from the `test-network` folder).
