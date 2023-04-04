@@ -6,6 +6,7 @@ import Loader from '../../components/Loader/Loader';
 import RootAPIService from '../../services/RootAPIService';
 import cookies from '../../utils/cookies';
 import localStorage from '../../utils/localStorage';
+import authService from '../../services/AuthService';
 
 function Navigation() {
   const navigate = useNavigate();
@@ -25,6 +26,12 @@ function Navigation() {
   }, []);
 
   const onLogOutClick = async () => {
+    const res = await authService.logout();
+    if (res.status !== 200) {
+      const json = await res.json();
+      setError(error === "" ? error : `${error}\n${json.message}`);
+    }
+
     Promise.all([cookies.deleteCookie(), localStorage.deleteLocalStorage('url')])
       .then(([deleted, removed]) => {
         if (deleted !== '') {
@@ -32,7 +39,7 @@ function Navigation() {
           return;
         }
         if (!removed) {
-          setError('Local storage error');
+          setError(error === "" ? error :`${error}\nLocal storage error`);
           return;
         }
         navigate('/');
