@@ -4,6 +4,7 @@ import { User } from '../models/user.model';
 import ledger from '../ledger/ledger';
 import { contracts } from '../app';
 import { pubKeyMatchesMnemonic } from '../utils/crypto';
+import isAuthenticated from '../middleware/isAuthenticated';
 
 const router = express.Router();
 
@@ -43,6 +44,10 @@ router.post('/login', async (request, res) => {
         httpOnly: true,
         sameSite: 'lax',
     }).end();
+});
+
+router.post('/logout', isAuthenticated, async(request, res) => {
+    res.status(200).clearCookie('fabricAuth');
 });
 
 export default router;
