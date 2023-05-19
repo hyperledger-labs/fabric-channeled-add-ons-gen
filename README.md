@@ -180,6 +180,22 @@ cd ../../test-network
 ./network.sh down
 ```
 
+## Using different chaincodes
+
+In order to use a different sample, or tailor the add-on to your business needs, the asset chaincode needs to be adapted. The user chaincode is separated and can be used so.
+
+For the asset chaincode, the core things that need to be changed are:
+
+In the API/backend level (`application` folder):
+
+- The ledger folder contains all the code related with the interaction with the chaincode, so all chaincode functionality should be encoded as functions there.
+- The API code is found in `routes`. The `assets.routes.ts` contains all the API endpoints related with the interaction with the assets. The endpoints there could be adjusted to your needs.
+
+On the add-on side:
+
+- All the interaction with the API is mapped inside the `services` folder, and especially the `AssetTransferService.ts`. Depending on your use case, this functionality could be adjusted.
+- Everything else has to be edited based on the UI you would be interested in presenting to your audience. 
+
 ## Status
 
 - Initial version supported an **asset-transfer-basic** workflow on **Google Chrome** and **Microsoft Edge**.
