@@ -200,3 +200,7 @@ On the add-on side:
 
 - Initial version supported an **asset-transfer-basic** workflow on **Google Chrome** and **Microsoft Edge**.
 - Inspired by [Hyperledger Labs Hyperledger Fabric Chrome Extension](https://github.com/hyperledger-labs/fabric-chrome-extension)
+
+## Future works
+
+- Enable private data collections integrations for dApps.
